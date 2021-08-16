@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { BackendResp, SurveyService } from '../survey.service';
 
@@ -10,7 +11,7 @@ export class NewSurveyComponent implements OnInit {
   allSurveys!: any;
   hasSurveys: boolean;
   newSurveyName!: string;
-  constructor(public surveyService: SurveyService) {
+  constructor(public surveyService: SurveyService, public router: Router) {
     this.hasSurveys = false;
     this.newSurveyName = "";
   }
@@ -48,5 +49,7 @@ export class NewSurveyComponent implements OnInit {
           console.log(err);
         })
   }
-
+  goToGenerator(index: number) {
+    this.router.navigate(['/generator'], { queryParams: { sid: this.allSurveys[index]._id } });
+  }
 }

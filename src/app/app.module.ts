@@ -7,11 +7,13 @@ import { NewSurveyComponent } from './new-survey/new-survey.component';
 
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { SurveyGeneratorComponent } from './survey-generator/survey-generator.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NewSurveyComponent
+    NewSurveyComponent,
+    SurveyGeneratorComponent
   ],
   imports: [
     BrowserModule,
