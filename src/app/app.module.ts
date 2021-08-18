@@ -10,13 +10,15 @@ import { FormsModule } from '@angular/forms';
 import { SurveyGeneratorComponent } from './survey-generator/survey-generator.component';
 import { SurveyViewerComponent } from './survey-viewer/survey-viewer.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { SurveyDoneComponent } from './survey-done/survey-done.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NewSurveyComponent,
     SurveyGeneratorComponent,
-    SurveyViewerComponent
+    SurveyViewerComponent,
+    SurveyDoneComponent
   ],
   imports: [
     BrowserModule,

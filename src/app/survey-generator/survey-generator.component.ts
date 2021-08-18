@@ -46,9 +46,19 @@ export class SurveyGeneratorComponent implements OnInit {
       this.currSurvey = JSON.parse(cache);
     }
     console.log(this.currSurvey);
-    const questionsCache = localStorage.getItem(this.currSurvey._id);
-    if (questionsCache)
-      this.questions = JSON.parse(questionsCache);
+    // const questionsCache = localStorage.getItem(this.currSurvey._id);
+    // if (questionsCache)
+    //   this.questions = JSON.parse(questionsCache);
+    // else
+    this.surveyService.getQuestionsForSurvey(this.currSurvey._id)
+      .subscribe(({ data }) => {
+        console.log("all ques", data);
+        this.questions = data;
+      },
+        (err) => {
+          console.log(err);
+          this.questions = [];
+        })
   }
   addQuestion(index: number) {
     this.questions.push({

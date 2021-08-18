@@ -1,0 +1,28 @@
+.survey-done {
+    width:100vw;
+    height:100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:10em;
+    div{
+        display: flex;
+        width:50vw;
+        height:50vh;
+    }
+    &__ill{
+        background: url("../../assets/images/survey-done.svg");
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+    &__content{
+        flex-direction: column;
+        font-size:3rem;
+        span{
+            margin-top: 40px;
+            font-size:1rem;
+            color:grey;
+            font-style: italic;
+        }
+    }
+}

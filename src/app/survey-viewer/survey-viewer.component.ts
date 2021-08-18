@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SurveyComponentType, SurveyGeneratorComponent } from '../survey-generator/survey-generator.component';
 import { SurveyService } from '../survey.service';
 
@@ -23,7 +23,7 @@ export class SurveyViewerComponent implements OnInit {
   public questionsAnswered = 0;
   public toastVisible: boolean = false;
   public toastText: string = "";
-  constructor(private route: ActivatedRoute, private surveyService: SurveyService) {
+  constructor(private route: ActivatedRoute, private surveyService: SurveyService, private router: Router) {
     this.currQuesIndex = 0;
     this.genCopy = new SurveyGeneratorComponent(surveyService);
     this.allAnswers = [];
@@ -120,6 +120,7 @@ export class SurveyViewerComponent implements OnInit {
       .subscribe((data) => {
         console.log("backendresp", data);
         this.showToast("Survey done");
+        this.router.navigate(["/done"]);
       },
         (err) => {
           console.log(err);

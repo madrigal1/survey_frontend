@@ -21,11 +21,12 @@ export class SurveyService {
   }
 
   getSurveyFromId(survey_id: string) {
-    return this.http.get<BackendResp>(`${BASE_URL}//survey/fetch/byId/${survey_id}`);
+    return this.http.get<BackendResp>(`${BASE_URL}/survey/fetch/byId/${survey_id}`);
   }
 
+
   fetchAllSurveys() {
-    return this.http.get<BackendResp>(`${BASE_URL}//survey/fetch/all`);
+    return this.http.get<BackendResp>(`${BASE_URL}/survey/fetch/all`);
     //.pipe(catchError(this.handleError));
   }
   createNewSurvey(name: string) {
