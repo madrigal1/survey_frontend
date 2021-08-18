@@ -11,6 +11,7 @@ export class NewSurveyComponent implements OnInit {
   allSurveys!: any;
   hasSurveys: boolean;
   newSurveyName!: string;
+
   constructor(public surveyService: SurveyService, public router: Router) {
     this.hasSurveys = false;
     this.newSurveyName = "";
@@ -50,6 +51,7 @@ export class NewSurveyComponent implements OnInit {
         })
   }
   goToGenerator(index: number) {
-    this.router.navigate(['/generator'], { queryParams: { sid: this.allSurveys[index]._id } });
+    this.surveyService.setCurrSurvey(this.allSurveys[index]);
+    this.router.navigate(['/generator']);
   }
 }

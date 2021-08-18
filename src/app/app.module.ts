@@ -8,18 +8,22 @@ import { NewSurveyComponent } from './new-survey/new-survey.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { SurveyGeneratorComponent } from './survey-generator/survey-generator.component';
+import { SurveyViewerComponent } from './survey-viewer/survey-viewer.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
     AppComponent,
     NewSurveyComponent,
-    SurveyGeneratorComponent
+    SurveyGeneratorComponent,
+    SurveyViewerComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

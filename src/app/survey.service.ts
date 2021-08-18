@@ -15,8 +15,14 @@ export interface BackendResp {
   providedIn: 'root'
 })
 export class SurveyService {
+  currSurvey: any;
+  constructor(private http: HttpClient) {
+    this.currSurvey = null;
+  }
 
-  constructor(private http: HttpClient) { }
+  getSurveyFromId(survey_id: string) {
+    return this.http.get<BackendResp>(`${BASE_URL}//survey/fetch/byId/${survey_id}`);
+  }
 
   fetchAllSurveys() {
     return this.http.get<BackendResp>(`${BASE_URL}//survey/fetch/all`);
@@ -29,5 +35,39 @@ export class SurveyService {
       headers,
       responseType: 'json',
     });
+  }
+
+  publishSurvey(questions: any) {
+    const body = JSON.stringify({ questions });
+    const headers = { "content-type": "application/json" };
+    return this.http.post<BackendResp>(`${BASE_URL}/question/new/batch`, body, {
+      headers,
+      responseType: 'json',
+    });
+  }
+
+  recordAnswers(answers: any) {
+    const body = JSON.stringify({ answers });
+    const headers = { "content-type": "application/json" };
+    return this.http.post<BackendResp>(`${BASE_URL}/answer/new/batch`, body, {
+      headers,
+      responseType: 'json',
+    });
+  }
+
+  getQuestionsForSurvey(survey_id: any) {
+    const headers = { "content-type": "application/json" };
+    return this.http.get<BackendResp>(`${BASE_URL}/question/fetch/all/bySurvey/${survey_id}`, {
+      headers,
+      responseType: 'json',
+    });
+  }
+
+  setCurrSurvey(currSurvey: any) {
+    this.currSurvey = currSurvey;
+  }
+
+  getCurrSurvey() {
+    return this.currSurvey;
   }
 }

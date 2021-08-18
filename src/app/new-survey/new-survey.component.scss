@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,300&display=swap');
+
 .survey-landing {
     width:100vw;
     height:100vh;
@@ -130,7 +131,8 @@
         text-align: center;
         overflow-y: scroll;
         // background-color: #01175f;
-        background: url("../../assets/images/blue_bg.svg");
+       // background: url("../../assets/images/blue_bg.svg");
+       background-color: #05299E;
         background-size: contain;
         &__nosurveys{
             color:white;

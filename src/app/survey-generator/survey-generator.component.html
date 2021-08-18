@@ -1,1 +1,104 @@
-<p>survey-generator works!</p>
+<div id="toastEle" class="toast">
+    <p>{{toastMsg}}</p>
+</div>
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title"> Survey Published and Live !</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <h5>Sharable Link</h5>
+        <a [href]="answerLink">
+            <p>{{answerLink}}</p>
+        </a>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+    </div>
+</ng-template>
+<article class="survey-generator">
+    <header class="survey-generator__header">
+        <div class="survey-generator__header__content">
+            <div class="survey-generator__header__content__info">
+                <img routerLink="/" class="left-arrow" src="../../assets/images/left_arrow.svg" alt="left arrow" />
+                <p>Atos Studio Survey Generator</p>
+            </div>
+            <div class="survey-generator__header__content__control-panel">
+                <div (click)="publishSurvey(content)"
+                    class="survey-generator__header__content__control-panel__publish-btn">
+                    <p>Publish</p>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section class="survey-generator__questionTypes">
+        <header class="survey-generator__questionTypes__title">
+            <p>questions type</p>
+        </header>
+        <div *ngFor="let type of questionTypes;index as i" (click)="addQuestion(i)"
+            class="survey-generator__questionTypes__type">
+            <img [src]="type.icon" alt="icon" />
+            <p> {{type.name}} </p>
+        </div>
+    </section>
+    <main class="survey-generator__main">
+        <div class="survey-generator__main__content">
+            <header class="survey-generator__main__content__header">
+                <div class="survey-generator__main__content__header__title">
+                    <h1>{{currSurvey.name}} blueprint</h1>
+                    <p>{{!hasAdded?
+                        "Add a question from the left side menu":
+                        "Click on save for local changes,click publish to share with customers"}}</p>
+                </div>
+                <div *ngIf="hasAdded" class="survey-generator__main__content__header__save" (click)="tempSave()">
+                    <img src="../../assets/images/save_btn.svg" alt="">
+                    <p>Save</p>
+                </div>
+            </header>
+            <main class="survey-generator__main__content__questions">
+                <div *ngFor="let question of questions;index as i"
+                    class="survey-generator__main__content__questions__question"
+                    [ngSwitch]="getInputType(question.type)">
+                    <ng-container *ngSwitchCase="SurveyComponentType.text">
+                        <div class="survey-generator__main__content__questions__question__about">
+                            <p class="survey-generator__main__content__questions__question__about__question-num">
+                                Q.{{i+1}}
+                            </p>
+                            <input class="survey-generator__main__content__questions__question__about__input"
+                                type="text" [(ngModel)]="question.main_data" placeholder="Input your question here">
+                        </div>
+                        <footer class="survey-generator__main__content__questions__question__about__footer">
+                            <span
+                                class="survey-generator__main__content__questions__question__about__footer__type-badge survey-generator__main__content__questions__question__about__footer__type-badge--text">Text</span>
+                            <img (click)="deleteQuestion(i)" src="../../assets/images/delete_icon.svg" alt="delete">
+                        </footer>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="SurveyComponentType.numeric">
+                        <div class="survey-generator__main__content__questions__question__about">
+                            <p class="survey-generator__main__content__questions__question__about__question-num">
+                                Q.{{i+1}}
+                            </p>
+                            <input class="survey-generator__main__content__questions__question__about__input"
+                                type="text" [(ngModel)]="question.main_data" placeholder="Input your question here">
+                        </div>
+                        <footer class="survey-generator__main__content__questions__question__about__footer">
+                            <span
+                                class="survey-generator__main__content__questions__question__about__footer__type-badge survey-generator__main__content__questions__question__about__footer__type-badge--number">Number</span>
+                            <img (click)="deleteQuestion(i)" src="../../assets/images/delete_icon.svg" alt="delete">
+                        </footer>
+                    </ng-container>
+                </div>
+            </main>
+        </div>
+    </main>
+    <section class=" survey-generator__properties">
+        <header class="survey-generator__properties__title">
+            <p>Properties Panel</p>
+            <p class="survey-generator__properties__title__subtitle">
+                Edit the text of your survey component here
+            </p>
+        </header>
+    </section>
+</article>

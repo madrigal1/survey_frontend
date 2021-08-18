@@ -1,0 +1,56 @@
+<ngb-toast class="toast" *ngIf="toastVisible" (delay)=9000 (hidden)="toastVisible=false">
+    {{toastText}}
+</ngb-toast>
+<article class="survey-viewer">
+    <header class="survey-viewer__header">
+        <p>Survey: </p>
+        <h4>{{currSurveyTitle}}</h4>
+    </header>
+    <main class="survey-viewer__currQues">
+        <section class="survey-viewer__currQues__question">
+            <header class="survey-viewer__currQues__question__header">
+                <p>Q.{{currQuesIndex+1}}</p>
+                <p>{{allQues[currQuesIndex].main_data}}</p>
+            </header>
+            <ng-container [ngSwitch]="genCopy.getInputType(allQues[currQuesIndex].main_data.type)">
+                <div *ngSwitchCase="SurveyComponentType.text">
+                    <input class="survey-viewer__currQues__question__answer" type="text" [(ngModel)]="currAnswer"
+                        placeholder="Input your answer here" (keydown)="handleKeydown($event)">
+                </div>
+            </ng-container>
+            <footer class="survey-viewer__currQues__question__footer">
+                <div class="survey-viewer__currQues__question__footer__okbtn" (click)="submitQuestion()">
+                    Ok
+                </div>
+                <div class="survey-viewer__currQues__question__footer__enter">
+                    <p>press <b>Enter</b> </p>
+                    <img src="../../assets/images/enter.svg" alt="enter">
+                </div>
+            </footer>
+        </section>
+        <nav class="survey-viewer__currQues__navBar">
+            <div class="survey-viewer__currQues__navBar__nav">
+                <div class="survey-viewer__currQues__navBar__nav__prevBtn" (click)="prevQuestion()">
+                    <img src="../../assets/images/left_arrow.svg" alt="left arrow">
+                    <p>Previous</p>
+                </div>
+                <div class="survey-viewer__currQues__navBar__nav__nextBtn" (click)="nextQuestion()">
+                    <p>Next</p>
+                    <img src="../../assets/images/left_arrow.svg" alt="">
+                </div>
+            </div>
+            <div *ngIf="questionsAnswered === allQues.length" (click)="submitAnswers()"
+                class="survey-viewer__currQues__navBar__submitSurvey">
+                <p>Submit Survey</p>
+            </div>
+        </nav>
+    </main>
+    <section class="survey-viewer__about">
+        <h3>About</h3>
+        <p>Survet details</p>
+        <h5>Questions Answered</h5>
+        <p>{{questionsAnswered}}</p>
+        <h5>Completion Time</h5>
+        <p>3mins</p>
+    </section>
+</article>
