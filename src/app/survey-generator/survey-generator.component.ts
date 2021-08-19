@@ -7,7 +7,8 @@ export enum SurveyComponentType {
   SINGLE_LINE_TEXT = "single_line_text",
   NUMERIC = "numeric",
   MULTIPLE_LINE_TEXT = "multiple_line_text",
-  MULTIPLE_CHOICE = "multiple_choice"
+  MULTIPLE_CHOICE = "multiple_choice",
+  RATING = "rating"
 }
 
 
@@ -25,22 +26,26 @@ export class SurveyGeneratorComponent implements OnInit {
     { name: "Single Line", icon: "../../assets/images/text_field.svg" },
     { name: "Numeric", icon: "../../assets/images/number_field.svg" },
     { name: "Multiple Lines", icon: "../../assets/images/multiple_line.svg" },
-    { name: "Multiple Choice", icon: "../../assets/images/mcq.svg" }
+    { name: "Multiple Choice", icon: "../../assets/images/mcq.svg" },
+    { name: "Rating", icon: "../../assets/images/rating.svg" }
   ];
   public questionTypeMap = {
     "Single Line": SurveyComponentType.SINGLE_LINE_TEXT,
     "Numeric": SurveyComponentType.NUMERIC,
     "Multiple Lines": SurveyComponentType.MULTIPLE_LINE_TEXT,
     "Multiple Choice": SurveyComponentType.MULTIPLE_CHOICE,
+    "Rating": SurveyComponentType.RATING,
   }
   public hasAdded: boolean;
   public SurveyComponentType = SurveyComponentType;
   public toastMsg: string;
   closeResult!: string;
   public mcqEnabled = false;
+  public ratingEnabled = false;
   public currMcqIndex = -1;
   public currMcq: any;
-
+  public currRating = 5;
+  public currRatingIndex = -1;
   constructor(private surveyService: SurveyService, private modalService?: NgbModal) {
     this.questions = [];
     this.hasAdded = false;
@@ -153,6 +158,7 @@ export class SurveyGeneratorComponent implements OnInit {
   }
   enableMcq(index: number) {
     console.log("triggered", index);
+    this.ratingEnabled = false;
     this.mcqEnabled = true;
     this.currMcqIndex = index;
   }
@@ -186,5 +192,29 @@ export class SurveyGeneratorComponent implements OnInit {
   deleteMcq(index: number) {
     this.currMcq.splice(index, 1);
     console.log(this.currMcq);
+  }
+  enableRatingEdit(index: number) {
+    this.mcqEnabled = false;
+    this.currRatingIndex = index;
+    this.ratingEnabled = true;
+  }
+
+  handleRatingSubmit() {
+    const question = this.questions[this.currRatingIndex];
+    question["additional_data"] = this.currRating;
+    this.questions[this.currRatingIndex] = question;
+    this.currRatingIndex = -1;
+    this.currRating = 5;
+    this.ratingEnabled = false;
+  }
+  handleNumberKeydown(evt: any) {
+    if (evt.keyCode === 13) {
+      this.handleRatingSubmit();
+      return;
+    }
+    var charCode = (evt.which) ? evt.which : evt.keyCode
+    if (charCode > 31 && (charCode != 46 && (charCode < 48 || charCode > 57)))
+      return false;
+    return true;
   }
 }

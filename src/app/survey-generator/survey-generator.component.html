@@ -97,6 +97,23 @@
                             <img (click)="deleteQuestion(i)" src="../../assets/images/delete_icon.svg" alt="delete">
                         </footer>
                     </ng-container>
+                    <ng-container *ngIf="question.type === SurveyComponentType.RATING">
+                        <div class="survey-generator__main__content__questions__question__about">
+                            <p class="survey-generator__main__content__questions__question__about__question-num">
+                                Q.{{i+1}}
+                            </p>
+                            <input class="survey-generator__main__content__questions__question__about__input"
+                                type="text" [(ngModel)]="question.main_data" placeholder="Input your question here">
+                        </div>
+                        <footer class="survey-generator__main__content__questions__question__about__footer">
+                            <div>
+                                <span
+                                    class="survey-generator__main__content__questions__question__about__footer__type-badge survey-generator__main__content__questions__question__about__footer__type-badge--rating">{{getClientFriendlyName(question.type)}}</span>
+                                <p (click)="enableRatingEdit(i)">Adjust Max Rating</p>
+                            </div>
+                            <img (click)="deleteQuestion(i)" src="../../assets/images/delete_icon.svg" alt="delete">
+                        </footer>
+                    </ng-container>
                 </div>
             </main>
         </div>
@@ -130,6 +147,16 @@
                     class="survey-generator__properties__body-mcq__footer__btn survey-generator__properties__body-mcq__footer__btn--submit">
                     Submit</div>
             </footer>
+        </main>
+        <main *ngIf="ratingEnabled" class="survey-generator__properties__body-mcq__rating">
+            <h3>Rating Settings</h3>
+            <div>
+                <p>Max Rating: </p>
+                <input [(ngModel)]="currRating" type="number" default="5" (keydown)="handleNumberKeydown($event)">
+                <div class="submit" (click)="handleRatingSubmit()">
+                    <p>Submit New Rating</p>
+                </div>
+            </div>
         </main>
     </section>
 </article>

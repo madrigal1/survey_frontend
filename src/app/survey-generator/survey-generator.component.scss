@@ -95,10 +95,11 @@
             display: flex;
             justify-content: flex-start;
             align-items: center;
+            padding-inline: min(3vw,0.3em);
             img {
                 max-width:40px;
                 max-height:45px;
-                margin:1px;
+                margin:5px;
                 position: relative;
                 top:4px;
             }
@@ -229,6 +230,9 @@
                                 &--mcq{
                                     background-color: red;
                                 }
+                                &--rating {
+                                    background-color: purple;
+                                }
                             }
                         }
                     }
@@ -271,6 +275,26 @@
             &__header {
                 width:100%;
                 padding-inline:2em;
+            }
+            &__rating {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+                padding: 1em 2.5em;
+                .submit {
+                    margin-top: 20px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background-color: #5F30E2;
+                    color:white;
+                    padding:0.6em 0.2em;
+                    p{
+                        font-weight: 500;
+                        font-size: 0.75rem;
+                    }
+                }
             }
             &__body {
                 width:100%;
