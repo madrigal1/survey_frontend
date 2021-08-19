@@ -136,4 +136,19 @@ export class SurveyViewerComponent implements OnInit {
       return false;
     return true;
   }
+
+  handleCheckbox(ev: any) {
+    console.log(ev.target.value);
+    if (ev.target.checked) {
+      if (!Array.isArray(this.currAnswer)) {
+        this.currAnswer = [ev.target.value];
+      } else {
+        this.currAnswer.push(ev.target.value);
+      }
+    } else {
+      let eleIndex = this.currAnswer.findIndex((ele: any) => ele === ev.target.value);
+      this.currAnswer.splice(eleIndex, 1);
+    }
+    console.log("mcq answer", this.currAnswer);
+  }
 }

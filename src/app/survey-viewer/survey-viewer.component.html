@@ -28,8 +28,8 @@
                 <div *ngSwitchCase="SurveyComponentType.MULTIPLE_CHOICE">
                     <fieldset *ngFor="let choice of allQues[currQuesIndex].additional_data;index as ci"
                         class="survey-viewer__currQues__question__choice">
-                        <input id="choice_label" name="choice_label" type="checkbox"
-                            class="survey-viewer__currQues__question__choice__switch">
+                        <input (change)="handleCheckbox($event)" id="choice_label" name="choice_label" type="checkbox"
+                            class="survey-viewer__currQues__question__choice__switch" [value]="choice">
                         <label for="choice_label">{{choice}}</label>
                     </fieldset>
                 </div>
