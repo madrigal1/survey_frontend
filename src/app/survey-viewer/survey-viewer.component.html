@@ -25,6 +25,14 @@
                     <textarea [(ngModel)]="currAnswer" class="survey-viewer__currQues__question__answer" name=""
                         id=""></textarea>
                 </div>
+                <div *ngSwitchCase="SurveyComponentType.MULTIPLE_CHOICE">
+                    <fieldset *ngFor="let choice of allQues[currQuesIndex].additional_data;index as ci"
+                        class="survey-viewer__currQues__question__choice">
+                        <input id="choice_label" name="choice_label" type="checkbox"
+                            class="survey-viewer__currQues__question__choice__switch">
+                        <label for="choice_label">{{choice}}</label>
+                    </fieldset>
+                </div>
             </ng-container>
             <footer class="survey-viewer__currQues__question__footer">
                 <div class="survey-viewer__currQues__question__footer__okbtn" (click)="submitQuestion()">
