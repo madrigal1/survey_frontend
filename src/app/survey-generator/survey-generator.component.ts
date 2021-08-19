@@ -4,9 +4,12 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 export enum SurveyComponentType {
-  text,
-  numeric,
+  SINGLE_LINE_TEXT = "single_line_text",
+  NUMERIC = "numeric",
+  MULTIPLE_LINE_TEXT = "multiple_line_text",
+  MULTIPLE_CHOICE = "multiple_choice"
 }
+
 
 @Component({
   selector: 'app-survey-generator',
@@ -19,19 +22,31 @@ export class SurveyGeneratorComponent implements OnInit {
   public answerLink: string;
   public questions: Array<any>;
   public questionTypes = [
-    { name: "text", icon: "../../assets/images/text_field.svg" },
-    { name: "numeric", icon: "../../assets/images/number_field.svg" }
+    { name: "Single Line", icon: "../../assets/images/text_field.svg" },
+    { name: "Numeric", icon: "../../assets/images/number_field.svg" },
+    { name: "Multiple Lines", icon: "../../assets/images/multiple_line.svg" },
+    { name: "Multiple Choice", icon: "../../assets/images/mcq.svg" }
   ];
+  public questionTypeMap = {
+    "Single Line": SurveyComponentType.SINGLE_LINE_TEXT,
+    "Numeric": SurveyComponentType.NUMERIC,
+    "Multiple Lines": SurveyComponentType.MULTIPLE_LINE_TEXT,
+    "Multiple Choice": SurveyComponentType.MULTIPLE_CHOICE,
+  }
   public hasAdded: boolean;
   public SurveyComponentType = SurveyComponentType;
   public toastMsg: string;
   closeResult!: string;
+  public mcqEnabled = false;
+  public currMcqIndex = -1;
+  public currMcq: any;
 
   constructor(private surveyService: SurveyService, private modalService?: NgbModal) {
     this.questions = [];
     this.hasAdded = false;
     this.toastMsg = "";
     this.answerLink = "";
+    this.currMcq = [];
   }
 
   ngOnInit(): void {
@@ -61,8 +76,12 @@ export class SurveyGeneratorComponent implements OnInit {
         })
   }
   addQuestion(index: number) {
+    this.hasAdded = true;
+    const qm = this.questionTypeMap
+    const qt = this.questionTypes[index].name as keyof typeof qm;
     this.questions.push({
-      type: this.questionTypes[index].name,
+      type: this.questionTypeMap[qt],
+      survey_id: this.currSurvey._id,
       main_data: ""
     })
     console.log(this.questions);
@@ -71,15 +90,13 @@ export class SurveyGeneratorComponent implements OnInit {
       q[0].scrollTop = q[0].scrollHeight - q[0].clientHeight + 100;
     }
   }
+  getClientFriendlyName(value: any) {
+    return Object.keys(this.questionTypeMap).find(key => (this.questionTypeMap as any)[key] === value);
+  }
 
-  getInputType(type: string): SurveyComponentType {
+  getInputType(type: SurveyComponentType): SurveyComponentType {
     this.hasAdded = true;
-    switch (type) {
-      case "numeric":
-        return SurveyComponentType.numeric;
-      default:
-        return SurveyComponentType.text;
-    }
+    return type;
   }
   setHasAdded() {
     this.hasAdded = true;
@@ -119,18 +136,55 @@ export class SurveyGeneratorComponent implements OnInit {
 
   publishSurvey(content: any) {
     console.log("backendinput", this.questions);
+    let errOcc = false;
     this.surveyService.publishSurvey(this.questions)
       .subscribe((data) => {
         console.log("Backend resp", data);
         this.showToast("Survey Published !")
       },
         (err) => {
+          errOcc = true;
           console.log(err);
         });
-    if (!this.modalService)
+    if (!this.modalService || errOcc)
       return;
     this.answerLink = `http://localhost:4200/survey/${this.currSurvey._id}`
     this.modalService.open(content, { size: 'lg' });
   }
-
+  enableMcq(index: number) {
+    console.log("triggered", index);
+    this.mcqEnabled = true;
+    this.currMcqIndex = index;
+  }
+  handleMcqEnter(ev: any) {
+    if (ev.keyCode === 13)
+      this.addMcq();
+  }
+  addMcq() {
+    console.log("works")
+    this.currMcq.push("");
+  }
+  disableMcq(index: number) {
+    this.mcqEnabled = false;
+    this.currMcq = [];
+    this.currMcqIndex = -1;
+  }
+  submitMcq() {
+    console.log(this.currMcq);
+    const question = this.questions[this.currMcqIndex];
+    question["additional_data"] = this.currMcq;
+    this.questions[this.currMcqIndex] = question;
+    console.log("finalmcq", this.questions[this.currMcqIndex]);
+    this.currMcqIndex = -1;
+    this.mcqEnabled = false;
+    this.showToast("Mcq added !")
+    console.log("after submit", this.questions);
+  }
+  trackByFn(index: any, mcq: string) {
+    return index;
+  }
+  deleteMcq(index: number) {
+    this.currMcq.splice(index, 1);
+    console.log(this.currMcq);
+  }
 }

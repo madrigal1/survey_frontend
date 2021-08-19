@@ -12,10 +12,18 @@
                 <p>Q.{{currQuesIndex+1}}</p>
                 <p>{{allQues[currQuesIndex].main_data}}</p>
             </header>
-            <ng-container [ngSwitch]="genCopy.getInputType(allQues[currQuesIndex].main_data.type)">
-                <div *ngSwitchCase="SurveyComponentType.text">
+            <ng-container [ngSwitch]="allQues[currQuesIndex].type">
+                <div *ngSwitchCase="SurveyComponentType.SINGLE_LINE_TEXT">
                     <input class="survey-viewer__currQues__question__answer" type="text" [(ngModel)]="currAnswer"
                         placeholder="Input your answer here" (keydown)="handleKeydown($event)">
+                </div>
+                <div *ngSwitchCase="SurveyComponentType.NUMERIC">
+                    <input class="survey-viewer__currQues__question__answer" type="number" [(ngModel)]="currAnswer"
+                        placeholder="Input your answer here" (keydown)="handleNumberKeydown($event)">
+                </div>
+                <div *ngSwitchCase="SurveyComponentType.MULTIPLE_LINE_TEXT">
+                    <textarea [(ngModel)]="currAnswer" class="survey-viewer__currQues__question__answer" name=""
+                        id=""></textarea>
                 </div>
             </ng-container>
             <footer class="survey-viewer__currQues__question__footer">

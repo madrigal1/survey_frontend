@@ -3,6 +3,7 @@ import { catchError } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BASE_URL } from './baseUrl';
 import { throwError } from 'rxjs';
+import _ from 'lodash'
 
 
 export interface BackendResp {
@@ -39,6 +40,9 @@ export class SurveyService {
   }
 
   publishSurvey(questions: any) {
+    questions = questions.map((question: any) => (
+      _.pick(question, ["survey_id", "type", "main_data", "additional_data"])
+    ))
     const body = JSON.stringify({ questions });
     const headers = { "content-type": "application/json" };
     return this.http.post<BackendResp>(`${BASE_URL}/question/new/batch`, body, {

@@ -50,13 +50,13 @@ export class SurveyViewerComponent implements OnInit {
         })
     this.surveyService.getQuestionsForSurvey(this.survey_id)
       .subscribe(({ data }) => {
-        //console.log(data);
+        console.log(data);
         this.allQues = data;
       },
         (err) => {
           console.log(err);
           if (err.status == 400) {
-            alert("survey id invalid");
+            alert("no questions for this survey.\n");
           }
           console.log(err);
         });
@@ -125,5 +125,15 @@ export class SurveyViewerComponent implements OnInit {
         (err) => {
           console.log(err);
         })
+  }
+  handleNumberKeydown(evt: any) {
+    if (evt.keyCode === 13) {
+      this.submitQuestion();
+      return;
+    }
+    var charCode = (evt.which) ? evt.which : evt.keyCode
+    if (charCode > 31 && (charCode != 46 && (charCode < 48 || charCode > 57)))
+      return false;
+    return true;
   }
 }

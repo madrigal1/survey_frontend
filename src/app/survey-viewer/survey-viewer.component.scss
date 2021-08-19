@@ -44,13 +44,15 @@
     &__currQues{
         grid-area: currQues;
         display: flex;
-        padding: 7em 15vw;
+        padding-block: 7em;
+        padding-left:10vw;
         justify-content: flex-start;
         align-items: flex-start;
         flex-direction: column;
         &__question {
             display: flex;
             flex-direction: column;
+            width:80%;
             &__header {
                 display: flex;
                 flex-direction: row;
@@ -117,7 +119,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width:110%;
+            width:100%;
+            padding-right:1em;
             &__nav {
                 display: flex;
                 div{

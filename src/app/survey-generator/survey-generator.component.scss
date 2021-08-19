@@ -95,8 +95,9 @@
             justify-content: flex-start;
             align-items: center;
             img {
-                width:50px;
-                height:50px;
+                max-width:40px;
+                max-height:45px;
+                margin:1px;
                 position: relative;
                 top:4px;
             }
@@ -104,6 +105,12 @@
                 color:#161616;
                 font-weight: bold;
                 font-weight: 400;
+            }
+            &--multiple-lines {
+                img {
+                    width:30px;
+                    height:30px;
+                }
             }
         }
     }
@@ -195,6 +202,13 @@
                                 width:25px;
                                 height:25px;
                             }
+                            div{
+                                display: flex;
+                                align-items: center;
+                                span{
+                                    margin-right: 30px;
+                                }
+                            }
                             &__type-badge {
                                 border-radius:3rem;
                                 padding:0.6em 1.5em;
@@ -205,8 +219,14 @@
                                 &--text {
                                     background-color: #2ECC71;
                                 }
-                                &--number {
+                                &--numeric {
                                     background-color: #3498DB;
+                                }
+                                &--multiple-text{
+                                    background-color: #dbca34;
+                                }
+                                &--mcq{
+                                    background-color: red;
                                 }
                             }
                         }
@@ -219,6 +239,8 @@
         grid-area: Properties;
        // background-color:#003cff;
         padding-top: 4em;
+        display: flex;
+        flex-direction: column;
         &__title {
             display: flex;
             justify-content: flex-start;
@@ -236,6 +258,82 @@
                 color: grey;
                 font-weight: 300;
                 letter-spacing: 0px;
+            }
+        }
+        &__body-mcq {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-start;
+            height:100%;
+            width:100%;
+            &__header {
+                width:100%;
+                padding-inline:2em;
+            }
+            &__body {
+                width:100%;
+                flex:1;
+                max-height: 50vh;
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                padding-inline:2em;
+                overflow-y: auto;
+                &__choice {
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    margin-bottom: 30px;
+                    input {
+                        outline:none;
+                        width:100%;
+                        height:1.3em;
+                        border: 0; 
+                        padding: 7px 0; 
+                        border-bottom: 1px solid rgb(128, 128, 128);
+                        font-size: 1rem;
+                        font-family: "Lato", Arial, sans-serif; 
+                        color: #333; 
+                        letter-spacing: 1px;
+                        &:focus {
+                            outline:none;
+                        }
+                    }
+                    p{
+                        white-space: nowrap;
+                        margin-right: 40px;
+                    }
+                    img {
+                        width:30px;
+                        height:30px;
+                    }
+                }
+            }
+            &__footer {
+                width:100%;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0 1em;
+                &__btn{
+                    display:flex;
+                    justify-content: center;
+                    align-items: center;
+                    width:50%;
+                    padding-block: 0.5em;
+                    margin-bottom:5px;
+                    border-radius: 3px;
+                    &--add {
+
+                    }
+                    &--submit {
+                     background-color: #562BF7;
+                     
+                     color:white;
+                    }
+                }
             }
         }
     }

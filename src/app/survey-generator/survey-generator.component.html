@@ -59,9 +59,9 @@
             </header>
             <main class="survey-generator__main__content__questions">
                 <div *ngFor="let question of questions;index as i"
-                    class="survey-generator__main__content__questions__question"
-                    [ngSwitch]="getInputType(question.type)">
-                    <ng-container *ngSwitchCase="SurveyComponentType.text">
+                    class="survey-generator__main__content__questions__question">
+                    <ng-container
+                        *ngIf="question.type===SurveyComponentType.SINGLE_LINE_TEXT ||question.type===SurveyComponentType.NUMERIC || question.type===SurveyComponentType.MULTIPLE_LINE_TEXT">
                         <div class="survey-generator__main__content__questions__question__about">
                             <p class="survey-generator__main__content__questions__question__about__question-num">
                                 Q.{{i+1}}
@@ -71,11 +71,16 @@
                         </div>
                         <footer class="survey-generator__main__content__questions__question__about__footer">
                             <span
-                                class="survey-generator__main__content__questions__question__about__footer__type-badge survey-generator__main__content__questions__question__about__footer__type-badge--text">Text</span>
+                                class="survey-generator__main__content__questions__question__about__footer__type-badge"
+                                [ngClass]="{
+                                    'survey-generator__main__content__questions__question__about__footer__type-badge--text': question.type == SurveyComponentType.SINGLE_LINE_TEXT,
+                                    'survey-generator__main__content__questions__question__about__footer__type-badge--multiple-text':question.type == SurveyComponentType.MULTIPLE_LINE_TEXT,
+                                    'survey-generator__main__content__questions__question__about__footer__type-badge--numeric':question.type == SurveyComponentType.NUMERIC
+                                }">{{getClientFriendlyName(question.type)}}</span>
                             <img (click)="deleteQuestion(i)" src="../../assets/images/delete_icon.svg" alt="delete">
                         </footer>
                     </ng-container>
-                    <ng-container *ngSwitchCase="SurveyComponentType.numeric">
+                    <ng-container *ngIf="question.type === SurveyComponentType.MULTIPLE_CHOICE">
                         <div class="survey-generator__main__content__questions__question__about">
                             <p class="survey-generator__main__content__questions__question__about__question-num">
                                 Q.{{i+1}}
@@ -84,8 +89,11 @@
                                 type="text" [(ngModel)]="question.main_data" placeholder="Input your question here">
                         </div>
                         <footer class="survey-generator__main__content__questions__question__about__footer">
-                            <span
-                                class="survey-generator__main__content__questions__question__about__footer__type-badge survey-generator__main__content__questions__question__about__footer__type-badge--number">Number</span>
+                            <div>
+                                <span
+                                    class="survey-generator__main__content__questions__question__about__footer__type-badge survey-generator__main__content__questions__question__about__footer__type-badge--mcq">{{getClientFriendlyName(question.type)}}</span>
+                                <p (click)="enableMcq(i)">Add Choices</p>
+                            </div>
                             <img (click)="deleteQuestion(i)" src="../../assets/images/delete_icon.svg" alt="delete">
                         </footer>
                     </ng-container>
@@ -100,5 +108,28 @@
                 Edit the text of your survey component here
             </p>
         </header>
+        <main *ngIf="mcqEnabled" class="survey-generator__properties__body-mcq">
+            <header class="survey-generator__properties__body-mcq__header">
+                <h6>Choices for this mcq</h6>
+                <hr />
+            </header>
+            <div class="survey-generator__properties__body-mcq__body">
+                <div class="survey-generator__properties__body-mcq__body__choice"
+                    *ngFor="let choice of currMcq;index as mcqi;trackBy:trackByFn">
+                    <p>Choice {{mcqi+1}}: </p>
+                    <input (keydown)="handleMcqEnter($event)" [(ngModel)]="currMcq[mcqi]" type="text"
+                        placeholder="Input choice" />
+                    <img src="../../assets/images/delete_icon.svg" alt="delete" (click)="deleteMcq(mcqi)">
+                </div>
+            </div>
+            <footer class="survey-generator__properties__body-mcq__footer">
+                <div (click)="addMcq()"
+                    class="survey-generator__properties__body-mcq__footer__btn survey-generator__properties__body-mcq__footer__btn--add">
+                    Add Choice</div>
+                <div (click)="submitMcq()"
+                    class="survey-generator__properties__body-mcq__footer__btn survey-generator__properties__body-mcq__footer__btn--submit">
+                    Submit</div>
+            </footer>
+        </main>
     </section>
 </article>
