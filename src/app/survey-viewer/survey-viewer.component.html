@@ -28,7 +28,7 @@
                 <div *ngSwitchCase="SurveyComponentType.SINGLE_SELECTION">
                     <fieldset *ngFor="let choice of allQues[currQuesIndex].additional_data;index as ci"
                         class="survey-viewer__currQues__question__choice">
-                        <input (change)="handleCheckbox($event)" id="choice_label" name="choice_label" type="radio"
+                        <input (change)="handleCheckbox($event,true)" id="choice_label" name="choice_label" type="radio"
                             class="survey-viewer__currQues__question__choice__switch" [value]="choice">
                         <label for="choice_label">{{choice}}</label>
                     </fieldset>
@@ -36,8 +36,8 @@
                 <div *ngSwitchCase="SurveyComponentType.MULTIPLE_SELECTION">
                     <fieldset *ngFor="let choice of allQues[currQuesIndex].additional_data;index as ci"
                         class="survey-viewer__currQues__question__choice">
-                        <input (change)="handleCheckbox($event)" id="choice_label" name="choice_label" type="checkbox"
-                            class="survey-viewer__currQues__question__choice__switch" [value]="choice">
+                        <input (change)="handleCheckbox($event,false)" id="choice_label" name="choice_label"
+                            type="checkbox" class="survey-viewer__currQues__question__choice__switch" [value]="choice">
                         <label for="choice_label">{{choice}}</label>
                     </fieldset>
                 </div>

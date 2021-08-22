@@ -134,12 +134,12 @@ export class SurveyViewerComponent implements OnInit {
     return true;
   }
 
-  handleCheckbox(ev: any) {
+  handleCheckbox(ev: any, isSingle: boolean) {
     console.log(ev.target.value);
     if (ev.target.checked) {
-      if (!Array.isArray(this.currAnswer)) {
+      if (!Array.isArray(this.currAnswer) || isSingle) {
         this.currAnswer = [ev.target.value];
-      } else {
+      } else if (!isSingle) {
         this.currAnswer.push(ev.target.value);
       }
     } else {
