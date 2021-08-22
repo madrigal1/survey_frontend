@@ -11,7 +11,6 @@ import { SurveyGeneratorComponent } from './survey-generator/survey-generator.co
 import { SurveyViewerComponent } from './survey-viewer/survey-viewer.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SurveyDoneComponent } from './survey-done/survey-done.component';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,7 +24,7 @@ import { SurveyDoneComponent } from './survey-done/survey-done.component';
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
-    NgbModule
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

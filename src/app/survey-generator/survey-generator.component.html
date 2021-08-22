@@ -52,7 +52,7 @@
                         "Add a question from the left side menu":
                         "Click on save for local changes,click publish to share with customers"}}</p>
                 </div>
-                <div *ngIf="hasAdded" class="survey-generator__main__content__header__save" (click)="tempSave()">
+                <div *ngIf="false" class="survey-generator__main__content__header__save" (click)="tempSave()">
                     <img src="../../assets/images/save_btn.svg" alt="">
                     <p>Save</p>
                 </div>
@@ -73,14 +73,15 @@
                             <span
                                 class="survey-generator__main__content__questions__question__about__footer__type-badge"
                                 [ngClass]="{
-                                    'survey-generator__main__content__questions__question__about__footer__type-badge--text': question.type == SurveyComponentType.SINGLE_LINE_TEXT,
-                                    'survey-generator__main__content__questions__question__about__footer__type-badge--multiple-text':question.type == SurveyComponentType.MULTIPLE_LINE_TEXT,
-                                    'survey-generator__main__content__questions__question__about__footer__type-badge--numeric':question.type == SurveyComponentType.NUMERIC
+                                    'survey-generator__main__content__questions__question__about__footer__type-badge--text': question.type === SurveyComponentType.SINGLE_LINE_TEXT,
+                                    'survey-generator__main__content__questions__question__about__footer__type-badge--multiple-text':question.type === SurveyComponentType.MULTIPLE_LINE_TEXT,
+                                    'survey-generator__main__content__questions__question__about__footer__type-badge--numeric':question.type === SurveyComponentType.NUMERIC
                                 }">{{getClientFriendlyName(question.type)}}</span>
                             <img (click)="deleteQuestion(i)" src="../../assets/images/delete_icon.svg" alt="delete">
                         </footer>
                     </ng-container>
-                    <ng-container *ngIf="question.type === SurveyComponentType.MULTIPLE_CHOICE">
+                    <ng-container
+                        *ngIf="question.type === SurveyComponentType.SINGLE_SELECTION || question.type === SurveyComponentType.MULTIPLE_SELECTION">
                         <div class="survey-generator__main__content__questions__question__about">
                             <p class="survey-generator__main__content__questions__question__about__question-num">
                                 Q.{{i+1}}
@@ -91,13 +92,18 @@
                         <footer class="survey-generator__main__content__questions__question__about__footer">
                             <div>
                                 <span
-                                    class="survey-generator__main__content__questions__question__about__footer__type-badge survey-generator__main__content__questions__question__about__footer__type-badge--mcq">{{getClientFriendlyName(question.type)}}</span>
+                                    class="survey-generator__main__content__questions__question__about__footer__type-badge"
+                                    [ngClass]="{
+                                        'survey-generator__main__content__questions__question__about__footer__type-badge--single-selection':question.type === SurveyComponentType.SINGLE_SELECTION,
+                                        'survey-generator__main__content__questions__question__about__footer__type-badge--multiple-selection':question.type=== SurveyComponentType.MULTIPLE_SELECTION
+                                    }">{{getClientFriendlyName(question.type)}}</span>
                                 <p (click)="enableMcq(i)">Add Choices</p>
                             </div>
                             <img (click)="deleteQuestion(i)" src="../../assets/images/delete_icon.svg" alt="delete">
                         </footer>
                     </ng-container>
-                    <ng-container *ngIf="question.type === SurveyComponentType.RATING">
+                    <ng-container
+                        *ngIf="question.type === SurveyComponentType.RATING || question.type === SurveyComponentType.SLIDER">
                         <div class="survey-generator__main__content__questions__question__about">
                             <p class="survey-generator__main__content__questions__question__about__question-num">
                                 Q.{{i+1}}
@@ -108,7 +114,11 @@
                         <footer class="survey-generator__main__content__questions__question__about__footer">
                             <div>
                                 <span
-                                    class="survey-generator__main__content__questions__question__about__footer__type-badge survey-generator__main__content__questions__question__about__footer__type-badge--rating">{{getClientFriendlyName(question.type)}}</span>
+                                    class="survey-generator__main__content__questions__question__about__footer__type-badge"
+                                    [ngClass]="{
+                                        'survey-generator__main__content__questions__question__about__footer__type-badge--rating':question.type === SurveyComponentType.RATING,
+                                        'survey-generator__main__content__questions__question__about__footer__type-badge--slider':question.type === SurveyComponentType.SLIDER
+                                    }">{{getClientFriendlyName(question.type)}}</span>
                                 <p (click)="enableRatingEdit(i)">Adjust Max Rating</p>
                             </div>
                             <img (click)="deleteQuestion(i)" src="../../assets/images/delete_icon.svg" alt="delete">

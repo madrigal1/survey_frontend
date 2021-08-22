@@ -7,7 +7,9 @@ export enum SurveyComponentType {
   SINGLE_LINE_TEXT = "single_line_text",
   NUMERIC = "numeric",
   MULTIPLE_LINE_TEXT = "multiple_line_text",
-  MULTIPLE_CHOICE = "multiple_choice",
+  SINGLE_SELECTION = "single_selection",
+  MULTIPLE_SELECTION = "multiple_selection",
+  SLIDER = "slider",
   RATING = "rating"
 }
 
@@ -26,15 +28,19 @@ export class SurveyGeneratorComponent implements OnInit {
     { name: "Single Line", icon: "../../assets/images/text_field.svg" },
     { name: "Numeric", icon: "../../assets/images/number_field.svg" },
     { name: "Multiple Lines", icon: "../../assets/images/multiple_line.svg" },
-    { name: "Multiple Choice", icon: "../../assets/images/mcq.svg" },
+    { name: "Single Selection", icon: "../../assets/images/mcq.svg" },
+    { name: "Multiple Selection", icon: "../../assets/images/checkbox.svg" },
+    { name: "Slider", icon: "../../assets/images/slider.svg" },
     { name: "Rating", icon: "../../assets/images/rating.svg" }
   ];
   public questionTypeMap = {
     "Single Line": SurveyComponentType.SINGLE_LINE_TEXT,
     "Numeric": SurveyComponentType.NUMERIC,
     "Multiple Lines": SurveyComponentType.MULTIPLE_LINE_TEXT,
-    "Multiple Choice": SurveyComponentType.MULTIPLE_CHOICE,
+    "Single Selection": SurveyComponentType.SINGLE_SELECTION,
+    "Multiple Selection": SurveyComponentType.MULTIPLE_SELECTION,
     "Rating": SurveyComponentType.RATING,
+    "Slider": SurveyComponentType.SLIDER,
   }
   public hasAdded: boolean;
   public SurveyComponentType = SurveyComponentType;
@@ -140,6 +146,17 @@ export class SurveyGeneratorComponent implements OnInit {
   }
 
   publishSurvey(content: any) {
+    this.questions = this.questions.map((question) => {
+      if (question.type == SurveyComponentType.SINGLE_SELECTION || question.type == SurveyComponentType.MULTIPLE_SELECTION) {
+        if (!question.additional_data)
+          question.additional_data = ["Choice 1", "Choice 2", "Choice 3"];
+      }
+      if (question.type == SurveyComponentType.RATING || question.type == SurveyComponentType.SLIDER) {
+        if (!question.additional_data)
+          question.additional_data = 10;
+      }
+      return question;
+    })
     console.log("backendinput", this.questions);
     let errOcc = false;
     this.surveyService.publishSurvey(this.questions)
@@ -183,6 +200,7 @@ export class SurveyGeneratorComponent implements OnInit {
     console.log("finalmcq", this.questions[this.currMcqIndex]);
     this.currMcqIndex = -1;
     this.mcqEnabled = false;
+    this.currMcq = [];
     this.showToast("Mcq added !")
     console.log("after submit", this.questions);
   }

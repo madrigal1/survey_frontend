@@ -25,13 +25,32 @@
                     <textarea [(ngModel)]="currAnswer" class="survey-viewer__currQues__question__answer" name=""
                         id=""></textarea>
                 </div>
-                <div *ngSwitchCase="SurveyComponentType.MULTIPLE_CHOICE">
+                <div *ngSwitchCase="SurveyComponentType.SINGLE_SELECTION">
+                    <fieldset *ngFor="let choice of allQues[currQuesIndex].additional_data;index as ci"
+                        class="survey-viewer__currQues__question__choice">
+                        <input (change)="handleCheckbox($event)" id="choice_label" name="choice_label" type="radio"
+                            class="survey-viewer__currQues__question__choice__switch" [value]="choice">
+                        <label for="choice_label">{{choice}}</label>
+                    </fieldset>
+                </div>
+                <div *ngSwitchCase="SurveyComponentType.MULTIPLE_SELECTION">
                     <fieldset *ngFor="let choice of allQues[currQuesIndex].additional_data;index as ci"
                         class="survey-viewer__currQues__question__choice">
                         <input (change)="handleCheckbox($event)" id="choice_label" name="choice_label" type="checkbox"
                             class="survey-viewer__currQues__question__choice__switch" [value]="choice">
                         <label for="choice_label">{{choice}}</label>
                     </fieldset>
+                </div>
+                <div *ngSwitchCase="SurveyComponentType.RATING">
+                    <ngb-rating [(rate)]="currAnswer"></ngb-rating>
+                    <hr>
+                    <pre>Rate: <b>{{currAnswer}}</b></pre>
+                </div>
+                <div *ngSwitchCase="SurveyComponentType.SLIDER">
+                    <div class="survey-viewer__currQues__question__slider">
+                        <input type="range" min="1" max="5" [(ngModel)]="currAnswer">
+                        <p>{{currAnswer}}</p>
+                    </div>
                 </div>
             </ng-container>
             <footer class="survey-viewer__currQues__question__footer">

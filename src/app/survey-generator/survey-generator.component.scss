@@ -227,8 +227,14 @@
                                 &--multiple-text{
                                     background-color: #dbca34;
                                 }
-                                &--mcq{
+                                &--single-selection{
+                                    background-color: rgb(118, 118, 255);
+                                }
+                                &--multiple-selection{
                                     background-color: red;
+                                }
+                                &--slider {
+                                    background-color: chocolate;
                                 }
                                 &--rating {
                                     background-color: purple;
