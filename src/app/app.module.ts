@@ -13,13 +13,15 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SurveyDoneComponent } from './survey-done/survey-done.component';
 
 import { NgCircleProgressModule } from 'ng-circle-progress';
+import { SurveyAnalyticsComponent } from './survey-analytics/survey-analytics.component';
 @NgModule({
   declarations: [
     AppComponent,
     NewSurveyComponent,
     SurveyGeneratorComponent,
     SurveyViewerComponent,
-    SurveyDoneComponent
+    SurveyDoneComponent,
+    SurveyAnalyticsComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

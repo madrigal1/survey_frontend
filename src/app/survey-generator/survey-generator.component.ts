@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { SurveyService } from '../survey.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BASE_URL, FRONTEND_URL } from '../baseUrl';
 
 
 export enum SurveyComponentType {
@@ -23,6 +24,7 @@ export enum SurveyComponentType {
 export class SurveyGeneratorComponent implements OnInit {
   public currSurvey: any;
   public answerLink: string;
+  public analyticsLink: string;
   public questions: Array<any>;
   public questionTypes = [
     { name: "Single Line", icon: "../../assets/images/text_field.svg" },
@@ -57,6 +59,7 @@ export class SurveyGeneratorComponent implements OnInit {
     this.hasAdded = false;
     this.toastMsg = "";
     this.answerLink = "";
+    this.analyticsLink = "";
     this.currMcq = [];
   }
 
@@ -170,7 +173,8 @@ export class SurveyGeneratorComponent implements OnInit {
         });
     if (!this.modalService || errOcc)
       return;
-    this.answerLink = `http://localhost:4200/survey/${this.currSurvey._id}`
+    this.answerLink = `${FRONTEND_URL}/survey/${this.currSurvey._id}`;
+    this.analyticsLink = `${FRONTEND_URL}/analytics/${this.currSurvey._id}`
     this.modalService.open(content, { size: 'lg' });
   }
   enableMcq(index: number) {
