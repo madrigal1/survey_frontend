@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -11,6 +11,8 @@ import { SurveyGeneratorComponent } from './survey-generator/survey-generator.co
 import { SurveyViewerComponent } from './survey-viewer/survey-viewer.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SurveyDoneComponent } from './survey-done/survey-done.component';
+
+import { NgCircleProgressModule } from 'ng-circle-progress';
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,12 +21,24 @@ import { SurveyDoneComponent } from './survey-done/survey-done.component';
     SurveyViewerComponent,
     SurveyDoneComponent
   ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
+  ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
     NgbModule,
+    NgCircleProgressModule.forRoot({
+      // set defaults here
+      radius: 100,
+      outerStrokeWidth: 16,
+      innerStrokeWidth: 8,
+      outerStrokeColor: "#78C000",
+      innerStrokeColor: "#C7E596",
+      animationDuration: 300,
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

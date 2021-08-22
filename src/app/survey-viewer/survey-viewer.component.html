@@ -81,11 +81,19 @@
         </nav>
     </main>
     <section class="survey-viewer__about">
-        <h3>About</h3>
-        <p>Survet details</p>
-        <h5>Questions Answered</h5>
-        <p>{{questionsAnswered}}</p>
-        <h5>Completion Time</h5>
-        <p>3mins</p>
+        <header>
+            <h3>About</h3>
+            <p>Survet details</p>
+            <h5>Questions Answered</h5>
+            <p>{{questionsAnswered}}</p>
+            <h5>Completion Time</h5>
+            <p>3mins</p>
+        </header>
+        <div class="survey-viewer__about__progress">
+            <circle-progress [percent]="questionsAnswered/allQues.length*100" [radius]="100" [outerStrokeWidth]="16"
+                [innerStrokeWidth]="8" [outerStrokeColor]="'#78C000'" [innerStrokeColor]="'#C7E596'" [animation]="true"
+                [animationDuration]="300">
+            </circle-progress>
+        </div>
     </section>
 </article>

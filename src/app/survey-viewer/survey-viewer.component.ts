@@ -3,10 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SurveyComponentType, SurveyGeneratorComponent } from '../survey-generator/survey-generator.component';
 import { SurveyService } from '../survey.service';
 
+
+
 @Component({
   selector: 'app-survey-viewer',
   templateUrl: './survey-viewer.component.html',
-  styleUrls: ['./survey-viewer.component.scss']
+  styleUrls: ['./survey-viewer.component.scss'],
 })
 export class SurveyViewerComponent implements OnInit {
   public survey_id!: string;

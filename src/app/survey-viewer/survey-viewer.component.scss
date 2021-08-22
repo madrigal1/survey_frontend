@@ -324,11 +324,21 @@
         }
     }
     &__about {
-        padding:1.8em 1.4em;
+        padding:1.8em 2em;
         grid-area:about;
         background-color: #F7F7F7;
         border-left: 3px solid rgba(243,243,243);
         -webkit-background-clip: padding-box;
         background-clip: padding-box;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        align-items: flex-start;
+        &__progress {
+          width:100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
     }
 }
