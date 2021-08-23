@@ -75,4 +75,12 @@ export class SurveyService {
   getCurrSurvey() {
     return this.currSurvey;
   }
+
+  getAnswersForSurvey(survey_id: any) {
+    const headers = { "content-type": "application/json" };
+    return this.http.get<BackendResp>(`${BASE_URL}/answer/fetch/all/bySurvey/${survey_id}`, {
+      headers,
+      responseType: 'json',
+    });
+  }
 }

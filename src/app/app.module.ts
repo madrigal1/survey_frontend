@@ -1,4 +1,4 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -14,6 +14,9 @@ import { SurveyDoneComponent } from './survey-done/survey-done.component';
 
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { SurveyAnalyticsComponent } from './survey-analytics/survey-analytics.component';
+
+import { ChartsModule } from 'ng2-charts';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,8 +30,8 @@ import { SurveyAnalyticsComponent } from './survey-analytics/survey-analytics.co
     CUSTOM_ELEMENTS_SCHEMA
   ],
   imports: [
-    BrowserModule,
     HttpClientModule,
+    BrowserModule,
     AppRoutingModule,
     FormsModule,
     NgbModule,
@@ -40,7 +43,8 @@ import { SurveyAnalyticsComponent } from './survey-analytics/survey-analytics.co
       outerStrokeColor: "#78C000",
       innerStrokeColor: "#C7E596",
       animationDuration: 300,
-    })
+    }),
+    ChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
