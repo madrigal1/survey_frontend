@@ -1,5 +1,7 @@
+@import "../../breakpoints.scss";
 body {
     overflow-y: auto;
+    overflow-x: hidden;
 }
 $circle-w: 100px;
 $circle-bg: #fff;
@@ -46,6 +48,7 @@ $anim-timing: 3s;
     align-items: center;
     flex-direction: column;
     color:white;
+    overflow-x: hidden;
     header {
         p {
             color:grey;
@@ -175,7 +178,10 @@ $anim-timing: 3s;
     justify-content: space-between;
     align-items: center;
     padding: 0 5vw;
-    overflow-y: auto;
+    @include media("<=tablet") {
+      flex-direction: column;
+      padding: 2em 0;
+    }
     h3 {
       color:white;
       text-align: center;
@@ -211,6 +217,9 @@ $anim-timing: 3s;
         height:auto;
         width:100%;
         overflow:auto;
+        @include media("<=tablet") {
+          margin:0;
+        }
       }
     }
 }
