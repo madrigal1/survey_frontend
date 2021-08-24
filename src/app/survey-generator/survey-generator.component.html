@@ -13,10 +13,10 @@
         <a [href]="answerLink">
             <p>{{answerLink}}</p>
         </a>
-        <h5>Analytics Report</h5>
+        <!-- <h5>Analytics Report</h5>
         <a [href]="analyticsLink">
             <p>{{analyticsLink}}</p>
-        </a>
+        </a> -->
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
@@ -30,6 +30,11 @@
                 <p>Atos Studio Survey Generator</p>
             </div>
             <div class="survey-generator__header__content__control-panel">
+                <div [routerLink]="[analyticsLink]"
+                    class="survey-generator__header__content__control-panel__analyticsBtn">
+                    <img src="../../assets/images/analytics.svg" alt="anaimage">
+                    <p>Analytics</p>
+                </div>
                 <div (click)="publishSurvey(content)"
                     class="survey-generator__header__content__control-panel__publish-btn">
                     <p>Publish</p>
@@ -123,7 +128,7 @@
                                         'survey-generator__main__content__questions__question__about__footer__type-badge--rating':question.type === SurveyComponentType.RATING,
                                         'survey-generator__main__content__questions__question__about__footer__type-badge--slider':question.type === SurveyComponentType.SLIDER
                                     }">{{getClientFriendlyName(question.type)}}</span>
-                                <p (click)="enableRatingEdit(i)">Adjust Max Rating</p>
+                                <p (click)="enableRatingEdit(i)">Add Details</p>
                             </div>
                             <img (click)="deleteQuestion(i)" src="../../assets/images/delete_icon.svg" alt="delete">
                         </footer>
@@ -163,12 +168,18 @@
             </footer>
         </main>
         <main *ngIf="ratingEnabled" class="survey-generator__properties__body-mcq__rating">
-            <h3>Rating Settings</h3>
+            <h3>Scale Settings</h3>
             <div>
-                <p>Max Rating: </p>
+                <p>Max Value: </p>
                 <input [(ngModel)]="currRating" type="number" default="5" (keydown)="handleNumberKeydown($event)">
+                <br />
+                <br />
+                <p>Annotation (optional)</p>
+                <textarea name="annotation" id="" [(ngModel)]="currAnnotation"></textarea>
+                <br />
+                <br />
                 <div class="submit" (click)="handleRatingSubmit()">
-                    <p>Submit New Rating</p>
+                    <p>Submit</p>
                 </div>
             </div>
         </main>

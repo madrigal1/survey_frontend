@@ -11,7 +11,7 @@ export class NewSurveyComponent implements OnInit {
   allSurveys!: any;
   hasSurveys: boolean;
   newSurveyName!: string;
-
+  newSurveyDesc!: string;
   constructor(public surveyService: SurveyService, public router: Router) {
     this.hasSurveys = false;
     this.newSurveyName = "";
@@ -39,7 +39,7 @@ export class NewSurveyComponent implements OnInit {
       alert("Please input a survey name");
       return;
     }
-    this.surveyService.createNewSurvey(this.newSurveyName as string)
+    this.surveyService.createNewSurvey(this.newSurveyName as string, this.newSurveyDesc)
       .subscribe((data: BackendResp) => {
         console.log(data);
         this.ngOnInit();

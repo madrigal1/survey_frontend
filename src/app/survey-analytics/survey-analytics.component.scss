@@ -11,6 +11,9 @@ $anim-timing: 3s;
 .fullscreen{
     width:100vw;
     height:100vh;
+    &--smaller{
+      height: 70vh;
+    }
 }
 .segway {
     margin-inline:auto;
@@ -167,22 +170,40 @@ $anim-timing: 3s;
     background-color: #B3BFCE;
     padding:0.5em;
     display: flex;
+    width: 100%;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    padding: 0 5vw;
+    overflow-y: auto;
     h3 {
       color:white;
       text-align: center;
-      font-size: 3rem;
+      font-size: 2rem;
     }
     &__chart {
+      max-width: 60vw;
       canvas {
         height:100% !important;
         width: 100% !important;
+        //margin-left:10vw;
       }
-      width:80%;
-      height:80%;
-      overflow-y: auto;
+      overflow: hidden;
+    }
+    &__numerical {
+      margin-left: 4em;
+      width:100%;
+      max-height:80%;
+      display: grid;
+      grid-gap: 1em;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      span{
+        color:grey;
+      }
+      p {
+        font-size: 3em;
+      }
     }
 }
+
    

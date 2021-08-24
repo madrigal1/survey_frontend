@@ -13,6 +13,7 @@ import { SurveyService } from '../survey.service';
 export class SurveyViewerComponent implements OnInit {
   public survey_id!: string;
   public currSurveyTitle!: any;
+  public currSurveyDesc!: any;
   public allQues!: any;
   public allAnswers: Array<any>;
   public currQuesIndex: number;
@@ -41,6 +42,7 @@ export class SurveyViewerComponent implements OnInit {
       .subscribe(({ data }) => {
         //console.log(data);
         this.currSurveyTitle = data.name;
+        this.currSurveyDesc = data.desc;
       },
         (err) => {
           alert("Invalid Survey id");

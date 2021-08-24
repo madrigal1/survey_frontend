@@ -42,16 +42,31 @@
                     </fieldset>
                 </div>
                 <div *ngSwitchCase="SurveyComponentType.RATING">
-                    <ngb-rating [(rate)]="currAnswer" [max]="allQues[currQuesIndex].additional_data"></ngb-rating>
-                    <hr>
-                    <pre>Rate: <b>{{currAnswer}}</b></pre>
+                    <div class="survey-viewer__currQues__question__rating">
+                        <div>
+                            <ngb-rating [(rate)]="currAnswer" [max]="allQues[currQuesIndex].additional_data.max">
+                            </ngb-rating>
+                            <hr>
+                            <pre>Rate: <b>{{currAnswer}}</b></pre>
+                        </div>
+                        <p class="annotation" *ngIf="allQues[currQuesIndex].additional_data.annotation">
+                            <b>Annotation</b><br /> {{allQues[currQuesIndex].additional_data.annotation}}
+                        </p>
+                    </div>
                 </div>
                 <div *ngSwitchCase="SurveyComponentType.SLIDER">
                     <div class="survey-viewer__currQues__question__slider">
-                        <input type="range" min="1" [max]="allQues[currQuesIndex].additional_data"
-                            [(ngModel)]="currAnswer">
-                        <p>{{currAnswer}}</p>
+                        <div>
+                            <input type="range" min="1" [max]="allQues[currQuesIndex].additional_data.max"
+                                [(ngModel)]="currAnswer">
+                            <pre>{{currAnswer}}</pre>
+                        </div>
+                        <p class="annotation" *ngIf="allQues[currQuesIndex].additional_data.annotation">
+                            <b>Annotation</b><br />
+                            {{allQues[currQuesIndex].additional_data.annotation}}
+                        </p>
                     </div>
+
                 </div>
             </ng-container>
             <footer class="survey-viewer__currQues__question__footer">
@@ -84,7 +99,8 @@
     <section class="survey-viewer__about">
         <header>
             <h3>About</h3>
-            <p>Survet details</p>
+            <h5 *ngIf="currSurveyDesc && currSurveyDesc.length > 1">Description</h5>
+            <p *ngIf="currSurveyDesc && currSurveyDesc.length > 1">{{currSurveyDesc}}</p>
             <h5>Questions Answered</h5>
             <p>{{questionsAnswered}}</p>
             <h5>Completion Time</h5>

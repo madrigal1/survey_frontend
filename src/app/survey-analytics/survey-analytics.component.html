@@ -38,12 +38,31 @@
         </li>
     </ul>
 </header>
-<article *ngFor="let question of selectionQues" class="survey-analytics-question fullscreen">
+<article *ngFor="let question of selectionQues" class="survey-analytics-question fullscreen fullscreen--smaller">
     <h3>Q. {{question.main_data}}</h3>
     <div class="survey-analytics-question__chart">
         <canvas baseChart [data]="getSelectionData(selectionAns,question._id,false)"
             [labels]="getSelectionData(selectionAns,question._id,true)" [options]="barChartOptions"
             [legend]="pieChartLegend" [chartType]="pieChartType" [colors]="pieChartColors">
+        </canvas>
+    </div>
+</article>
+<header class="segway" *ngIf="scaleQues.length > 0">
+    <ul>
+        <li>
+            <h1>Scale Questions</h1>
+        </li>
+    </ul>
+</header>
+<article *ngFor="let question of scaleQues" class="survey-analytics-question fullscreen fullscreen--smaller">
+    <h3>Q. {{question.main_data}}</h3>
+    <div class="survey-analytics-question__chart">
+        <canvas baseChart [labels]="getScaleLabel(question._id)" [datasets]="[{
+            maxBarThickness: 60,
+            data:getScaleData(question._id),
+            label: 'Series A',
+            pointRadius: 10
+        }]" [options]="barChartOptions" [chartType]="barChartType" [colors]="pieChartColors">
         </canvas>
     </div>
 </article>
@@ -56,13 +75,46 @@
 </header>
 <article *ngFor="let question of numericalQues" class="survey-analytics-question fullscreen">
     <h3>Q. {{question.main_data}}</h3>
-    <div class="survey-analytics-question__chart">
-        <canvas baseChart [datasets]="[{
-            data:getNumericalData(question._id),
-            label: 'Series A',
-            pointRadius: 10
-        }]" [options]="scatterChartOptions" [labels]="scatterChartLabels" [chartType]="scatterChartType"
-            [colors]="pieChartColors">
-        </canvas>
+    <div class="survey-analytics-question__numerical">
+        <div>
+            <span>Mean</span>
+            <hr />
+            <p>{{getMean(question._id)}}</p>
+        </div>
+        <div>
+            <span>Std Dev</span>
+            <hr />
+            <p>{{getStandardDeviation(question._id)}}</p>
+        </div>
+        <div>
+            <span>Max</span>
+            <hr />
+            <p>{{getMax(question._id)}}</p>
+        </div>
+        <div>
+            <span>Min</span>
+            <hr />
+            <p>{{getMin(question._id)}}</p>
+        </div>
+        <div>
+            <span>Count</span>
+            <hr />
+            <p>{{getCount(question._id)}}</p>
+        </div>
+        <div>
+            <span>25th Quartile</span>
+            <hr />
+            <p>{{get25Quartile(question._id)}}</p>
+        </div>
+        <div>
+            <span>Median</span>
+            <hr />
+            <p>{{get50Quartile(question._id)}}</p>
+        </div>
+        <div>
+            <span>75th Quartile</span>
+            <hr />
+            <p>{{get75Quartile(question._id)}}</p>
+        </div>
     </div>
 </article>

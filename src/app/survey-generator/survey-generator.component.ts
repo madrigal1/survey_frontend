@@ -54,6 +54,7 @@ export class SurveyGeneratorComponent implements OnInit {
   public currMcq: any;
   public currRating = 5;
   public currRatingIndex = -1;
+  public currAnnotation: string;
   constructor(private surveyService: SurveyService, private modalService?: NgbModal) {
     this.questions = [];
     this.hasAdded = false;
@@ -61,6 +62,7 @@ export class SurveyGeneratorComponent implements OnInit {
     this.answerLink = "";
     this.analyticsLink = "";
     this.currMcq = [];
+    this.currAnnotation = "";
   }
 
   ngOnInit(): void {
@@ -75,6 +77,7 @@ export class SurveyGeneratorComponent implements OnInit {
       this.currSurvey = JSON.parse(cache);
     }
     console.log(this.currSurvey);
+    this.analyticsLink = `/analytics/${this.currSurvey._id}`
     // const questionsCache = localStorage.getItem(this.currSurvey._id);
     // if (questionsCache)
     //   this.questions = JSON.parse(questionsCache);
@@ -174,7 +177,6 @@ export class SurveyGeneratorComponent implements OnInit {
     if (!this.modalService || errOcc)
       return;
     this.answerLink = `${FRONTEND_URL}/survey/${this.currSurvey._id}`;
-    this.analyticsLink = `${FRONTEND_URL}/analytics/${this.currSurvey._id}`
     this.modalService.open(content, { size: 'lg' });
   }
   enableMcq(index: number) {
@@ -217,16 +219,20 @@ export class SurveyGeneratorComponent implements OnInit {
   }
   enableRatingEdit(index: number) {
     this.mcqEnabled = false;
+    this.ratingEnabled = false;
     this.currRatingIndex = index;
     this.ratingEnabled = true;
   }
 
   handleRatingSubmit() {
     const question = this.questions[this.currRatingIndex];
-    question["additional_data"] = this.currRating;
+    question["additional_data"] = { max: this.currRating }
+    if (this.currAnnotation && this.currAnnotation.length > 1)
+      question.additional_data["annotation"] = this.currAnnotation;
     this.questions[this.currRatingIndex] = question;
     this.currRatingIndex = -1;
     this.currRating = 5;
+    this.currAnnotation = "";
     this.ratingEnabled = false;
   }
   handleNumberKeydown(evt: any) {

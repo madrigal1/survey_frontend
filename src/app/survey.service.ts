@@ -30,8 +30,10 @@ export class SurveyService {
     return this.http.get<BackendResp>(`${BASE_URL}/survey/fetch/all`);
     //.pipe(catchError(this.handleError));
   }
-  createNewSurvey(name: string) {
-    const body = JSON.stringify({ name });
+  createNewSurvey(name: string, desc: string | null) {
+    let input = { name };
+    if (desc && desc.length > 0) (input as any)["desc"] = desc;
+    const body = JSON.stringify(input);
     const headers = { "content-type": "application/json" };
     return this.http.post<BackendResp>(`${BASE_URL}/survey/new`, body, {
       headers,

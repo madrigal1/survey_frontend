@@ -2,6 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChartOptions, ChartType } from 'chart.js';
 import { Label, SingleDataSet } from 'ng2-charts';
+import { isConstructorDeclaration } from 'typescript';
 import { SurveyComponentType } from '../survey-generator/survey-generator.component';
 import { SurveyService } from '../survey.service';
 @Component({
@@ -16,16 +17,35 @@ export class SurveyAnalyticsComponent implements OnInit {
   allQues!: any;
   survey!: any;
   selectionQues: any;
-  numericalQues: any;
+  scaleQues: any;
   selectionAns!: any;
-  numericalAns!: any;
-  public barChartOptions = {
-    scaleShowVerticalLines: false,
+  scaleAns!: any;
+  numericalQues: any;
+  numericalAns: any;
+  public barChartOptions: ChartOptions = {
     responsive: true,
+    legend: {
+      position: 'bottom'
+    },
+    animation: {
+      duration: 0,
+    },
+    scales: {
+      xAxes: [{
+        ticks: {
+          beginAtZero: true
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          beginAtZero: true
+        }
+      }]
+    },
   };
   public pieChartLabels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
   public pieChartType: ChartType = 'pie';
-  public scatterChartType: ChartType = 'scatter';
+  public barChartType: ChartType = 'bar';
   public pieChartLegend = true;
   public barChartData = [
     { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
@@ -48,7 +68,7 @@ export class SurveyAnalyticsComponent implements OnInit {
   public scatterChartLabels: Label[] = ['Eating', 'Drinking', 'Sleeping', 'Designing', 'Coding', 'Cycling', 'Running'];
   constructor(private route: ActivatedRoute, private surveyService: SurveyService) {
     this.selectionAns = [];
-    this.numericalAns = [];
+    this.scaleAns = [];
   }
 
   ngOnInit(): void {
@@ -72,6 +92,7 @@ export class SurveyAnalyticsComponent implements OnInit {
         console.log("allQues", data)
         this.allQues = data;
         this.selectionQues = data.filter((ele: any) => ele.type === SurveyComponentType.SINGLE_SELECTION || ele.type === SurveyComponentType.MULTIPLE_SELECTION);
+        this.scaleQues = data.filter((ele: any) => ele.type === SurveyComponentType.SLIDER || ele.type === SurveyComponentType.RATING);
         this.numericalQues = data.filter((ele: any) => ele.type === SurveyComponentType.NUMERIC);
         console.log(this.selectionQues);
       },
@@ -83,8 +104,9 @@ export class SurveyAnalyticsComponent implements OnInit {
         console.log("allAns", data);
         this.allAnswers = data;
         this.selectionAns = this.allAnswers.filter((ele: any) => ele.type === SurveyComponentType.SINGLE_SELECTION || ele.type === SurveyComponentType.MULTIPLE_SELECTION);
+        this.scaleAns = this.allAnswers.filter((ele: any) => ele.type === SurveyComponentType.SLIDER || ele.type === SurveyComponentType.RATING);
         this.numericalAns = this.allAnswers.filter((ele: any) => ele.type === SurveyComponentType.NUMERIC);
-        console.log("selectAns", this.selectionAns);
+        console.log("selectAns", this.numericalAns);
       },
         (err) => {
           console.log(err);
@@ -114,20 +136,96 @@ export class SurveyAnalyticsComponent implements OnInit {
     console.log(event, active);
   }
 
-  getNumericalData(question_id: string) {
-    let res: any = [];
-    let filteredAns = this.numericalAns.filter((ele: any) => ele.question_id === question_id);
-    filteredAns.forEach(({ main_answer }: any, index: number) => {
-      res.push({
-        x: index + 1,
-        y: main_answer,
-      });
-    })
-    console.log("num", res);
+  getScaleData(question_id: string): number[] {
+    let filteredAns = this.scaleAns.filter((ele: any) => ele.question_id === question_id);
+    let res = this.getScaleFreqObj(filteredAns, false) as number[];
+    //console.log("sd", res);
     return res;
+  }
+
+  private asc(arr: Array<any>) {
+    return arr.sort((a, b) => a - b);
+  }
+  private sum(arr: Array<any>) {
+    return arr.reduce((a, b) => a + b, 0);
+  }
+  private mean(arr: Array<any>) {
+    return this.sum(arr) / arr.length;
+  }
+  private std(arr: Array<any>) {
+    const n = arr.length
+    const mean = arr.reduce((a, b) => a + b) / n
+    return Math.sqrt(arr.map((x: any) => Math.pow(x - mean, 2)).reduce((a: any, b: any) => a + b) / n)
+  }
+  private quantile(arr: Array<any>, q: number) {
+    const sorted = this.asc(arr);
+    const pos = (sorted.length - 1) * q;
+    const base = Math.floor(pos);
+    const rest = pos - base;
+    if (sorted[base + 1] !== undefined) {
+      return sorted[base] + rest * (sorted[base + 1] - sorted[base]);
+    } else {
+      return sorted[base];
+    }
+  }
+  get25Quartile(question_id: string) {
+    let filteredAns = this.numericalAns.filter((ele: any) => ele.question_id === question_id);
+    filteredAns = filteredAns.map((ans: any) => ans.main_answer);
+    return this.quantile(filteredAns, .25);
+  }
+  get50Quartile(question_id: string) {
+    let filteredAns = this.numericalAns.filter((ele: any) => ele.question_id === question_id);
+    filteredAns = filteredAns.map((ans: any) => ans.main_answer);
+    return this.quantile(filteredAns, .50);
+  }
+
+  get75Quartile(question_id: string) {
+    let filteredAns = this.numericalAns.filter((ele: any) => ele.question_id === question_id);
+    filteredAns = filteredAns.map((ans: any) => ans.main_answer);
+    return this.quantile(filteredAns, .75);
+  }
+
+
+  getMean(question_id: string) {
+    let filteredAns = this.numericalAns.filter((ele: any) => ele.question_id === question_id);
+    filteredAns = filteredAns.map((ans: any) => ans.main_answer);
+    return this.mean(filteredAns);
+  }
+  getStandardDeviation(question_id: string) {
+    let filteredAns = this.numericalAns.filter((ele: any) => ele.question_id === question_id);
+    filteredAns = filteredAns.map((ans: any) => ans.main_answer);
+    return this.std(filteredAns);
+  }
+  getCount(question_id: string) {
+    let filteredAns = this.numericalAns.filter((ele: any) => ele.question_id === question_id);
+    filteredAns = filteredAns.map((ans: any) => ans.main_answer);
+    return filteredAns.length;
+  }
+  getMax(question_id: string) {
+    let filteredAns = this.numericalAns.filter((ele: any) => ele.question_id === question_id);
+    filteredAns = filteredAns.map((ans: any) => ans.main_answer);
+    return Math.max(filteredAns);
+  }
+  getMin(question_id: string) {
+    let filteredAns = this.numericalAns.filter((ele: any) => ele.question_id === question_id);
+    filteredAns = filteredAns.map((ans: any) => ans.main_answer);
+    return Math.min(filteredAns);
+  }
+  getScaleLabel(question_id: string): string[] {
+    let filteredAns = this.scaleAns.filter((ele: any) => ele.question_id === question_id);
+    return this.getScaleFreqObj(filteredAns, true) as string[];
   }
   onSelect(event: any) {
     console.log(event);
+  }
+
+  getScaleFreqObj(arr: any, labels: boolean): (string | number)[] {
+    let counts = {};
+    for (const { main_answer } of arr) {
+      (counts as any)[main_answer] = (counts as any)[main_answer] ? (counts as any)[main_answer] + 1 : 1;
+    }
+    //console.log(counts);
+    return labels ? Object.keys(counts) : Object.values(counts);
   }
 
   getWordFreqObj(arr: any) {
