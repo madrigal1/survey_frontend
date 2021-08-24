@@ -1,3 +1,4 @@
+@import "../../breakpoints.scss";
 .toast {
     position: fixed;
     bottom:1em;
@@ -24,6 +25,16 @@
     "currQues currQues currQues currQues currQues currQues about about"
     "currQues currQues currQues currQues currQues currQues about about"
     "currQues currQues currQues currQues currQues currQues about about"; 
+    @include media("<=tablet") {
+      height: auto;
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+      grid-template-areas: 
+        "header"
+        "about"
+        "currQues"
+        ;
+    }
     &__header {
         grid-area: header;
         display: flex;
@@ -232,6 +243,10 @@
               width: 100%;
               justify-content: space-between;
               align-items: center;
+              @include media("<=tablet") {
+                flex-direction: column;
+                align-items: center;
+              }
               p{
                 color:grey;
               }
@@ -241,6 +256,10 @@
               width: 100%;
               justify-content: space-between;
               align-items: center;
+              @include media("<=tablet") {
+                flex-direction: column;
+                align-items: center;
+              }
               p{
                 color:grey;
               }

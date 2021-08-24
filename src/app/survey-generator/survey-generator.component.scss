@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
-
+@import "../../breakpoints.scss";
 .toast{
     position: fixed;
     bottom:2em;
@@ -44,6 +44,16 @@
     "questionTypes main main main main Properties Properties"
     "questionTypes main main main main Properties Properties"
     "questionTypes main main main main Properties Properties"; 
+    @include media("<=phone") {
+        height: auto;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto 100vh auto;
+        grid-template-areas:
+            "header"
+            "questionTypes"
+            "main"
+            "Properties";
+    }
     &__header {
         grid-area: header;
         padding:0.8em 1em;
@@ -57,13 +67,22 @@
                 justify-content: space-between;
                 align-items: center;
                 .left-arrow {
-                    width:30px;
-                    height:40px;
-                    margin-right: 40px;
+                    max-width:30px;
+                    max-height:40px;
+                    margin-right: 1vw;
+                    @include media("<=570px") {
+                        transform: scale(0.4);
+
+                    }
                 }
                 p {
                     font-weight: 400;
                     font-size: 1.3rem;
+                    white-space: nowrap;
+                    @include media("<=570px") {
+                        font-size: 0.65rem;
+                        white-space: normal;
+                    }
                 }
             }
             &__control-panel {
@@ -142,7 +161,7 @@
     &__main {
         grid-area: main;
         background-color: #F6F8FA;
-        padding-inline: 2em;
+        padding-inline: min(2em,2vw);
         padding-top:4em;
         overflow-y: auto;
         &__content {
