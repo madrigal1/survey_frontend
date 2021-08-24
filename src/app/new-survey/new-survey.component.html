@@ -13,7 +13,7 @@
             <input [(ngModel)]="newSurveyName" name="survey_name" type="text" placeholder="Enter Survey Name"
                 (keydown)="handleEnter($event)" />
             <input [(ngModel)]="newSurveyDesc" name="survey_desc" type="text" placeholder="Enter Survey Desc"
-                (keydown)="handleEnter($event)" maxlength="140" />
+                (keydown)="handleEnter($event)" maxlength="500" />
             <div class="survey-landing__new__details__button" (click)="createSurvey()">
                 <p>Generate New Survey</p>
                 <img src="../../assets/images/noun_Arrow_3078248.svg" alt="right arrow">

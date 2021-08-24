@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { SurveyService } from '../survey.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { BASE_URL, FRONTEND_URL } from '../baseUrl';
+import { BASE_URL } from '../baseUrl';
 
 
 export enum SurveyComponentType {
@@ -176,7 +176,7 @@ export class SurveyGeneratorComponent implements OnInit {
         });
     if (!this.modalService || errOcc)
       return;
-    this.answerLink = `${FRONTEND_URL}/survey/${this.currSurvey._id}`;
+    this.answerLink = `${window.location.origin}/survey/${this.currSurvey._id}`;
     this.modalService.open(content, { size: 'lg' });
   }
   enableMcq(index: number) {
