@@ -1,4 +1,7 @@
+@use 'sass:math';
 @import "../../breakpoints.scss";
+
+
 body {
     overflow-y: auto;
     overflow-x: hidden;
@@ -81,15 +84,15 @@ $anim-timing: 3s;
           transform-origin: 0%;
           
           &.circle-top {
-            height: $circle-w / 3;
-            width: $circle-w / 2.4;
+            height: math.div($circle-w,3);
+            width: math.div($circle-w,2.4);
             animation: blob-1-anim $anim-timing $bezier infinite;
             z-index: 0;
             top:0;
           }
           &.circle-bottom {
-            height: $circle-w / 3;
-            width: $circle-w / 2.4;
+            height: math.div($circle-w,3);
+            width: math.div($circle-w,2.4);
             animation: blob-2-anim $anim-timing $bezier  infinite;
             z-index: 9;
             bottom:0px;
