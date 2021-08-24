@@ -41,8 +41,28 @@
 <article *ngFor="let question of selectionQues" class="survey-analytics-question fullscreen">
     <h3>Q. {{question.main_data}}</h3>
     <div class="survey-analytics-question__chart">
-        <canvas baseChart [data]="getSelectionData(question._id,false)" [labels]="getSelectionData(question._id,true)"
-            [options]="barChartOptions" [legend]="pieChartLegend" [chartType]="pieChartType" [colors]="pieChartColors">
+        <canvas baseChart [data]="getSelectionData(selectionAns,question._id,false)"
+            [labels]="getSelectionData(selectionAns,question._id,true)" [options]="barChartOptions"
+            [legend]="pieChartLegend" [chartType]="pieChartType" [colors]="pieChartColors">
+        </canvas>
+    </div>
+</article>
+<header class="segway" *ngIf="numericalQues.length > 0">
+    <ul>
+        <li>
+            <h1>Numerical Questions</h1>
+        </li>
+    </ul>
+</header>
+<article *ngFor="let question of numericalQues" class="survey-analytics-question fullscreen">
+    <h3>Q. {{question.main_data}}</h3>
+    <div class="survey-analytics-question__chart">
+        <canvas baseChart [datasets]="[{
+            data:getNumericalData(question._id),
+            label: 'Series A',
+            pointRadius: 10
+        }]" [options]="scatterChartOptions" [labels]="scatterChartLabels" [chartType]="scatterChartType"
+            [colors]="pieChartColors">
         </canvas>
     </div>
 </article>
