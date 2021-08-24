@@ -41,7 +41,7 @@ export class SurveyService {
 
   publishSurvey(questions: any) {
     questions = questions.map((question: any) => (
-      _.pick(question, ["survey_id", "type", "main_data", "additional_data"])
+      _.pick(question, ["_id", "survey_id", "type", "main_data", "additional_data"])
     ))
     const body = JSON.stringify({ questions });
     const headers = { "content-type": "application/json" };

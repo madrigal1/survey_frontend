@@ -42,13 +42,14 @@
                     </fieldset>
                 </div>
                 <div *ngSwitchCase="SurveyComponentType.RATING">
-                    <ngb-rating [(rate)]="currAnswer"></ngb-rating>
+                    <ngb-rating [(rate)]="currAnswer" [max]="allQues[currQuesIndex].additional_data"></ngb-rating>
                     <hr>
                     <pre>Rate: <b>{{currAnswer}}</b></pre>
                 </div>
                 <div *ngSwitchCase="SurveyComponentType.SLIDER">
                     <div class="survey-viewer__currQues__question__slider">
-                        <input type="range" min="1" max="5" [(ngModel)]="currAnswer">
+                        <input type="range" min="1" [max]="allQues[currQuesIndex].additional_data"
+                            [(ngModel)]="currAnswer">
                         <p>{{currAnswer}}</p>
                     </div>
                 </div>

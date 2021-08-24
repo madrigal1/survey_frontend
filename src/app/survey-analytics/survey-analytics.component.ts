@@ -71,8 +71,9 @@ export class SurveyAnalyticsComponent implements OnInit {
       .subscribe(({ data }) => {
         console.log("allAns", data);
         this.allAnswers = data;
-        this.selectionAns = data.filter((ele: any) => ele.type === SurveyComponentType.SINGLE_SELECTION || ele.type === SurveyComponentType.MULTIPLE_SELECTION);
-        this.numericalAns = data.filter((ele: any) => ele.type === SurveyComponentType.NUMERIC);
+        this.selectionAns = this.allAnswers.filter((ele: any) => ele.type === SurveyComponentType.SINGLE_SELECTION || ele.type === SurveyComponentType.MULTIPLE_SELECTION);
+        this.numericalAns = this.allAnswers.filter((ele: any) => ele.type === SurveyComponentType.NUMERIC);
+        console.log("selectAns", this.selectionAns);
       },
         (err) => {
           console.log(err);
@@ -81,7 +82,9 @@ export class SurveyAnalyticsComponent implements OnInit {
 
   getSelectionData(question_id: string, labels: boolean): any {
     //console.log("input", this.selectionAns, question_id);
-    let filteredAns = this.allAnswers.filter((ele: any) => ele.question_id === question_id)
+    //console.log("qid", question_id);
+    let filteredAns = this.selectionAns.filter((ele: any) => ele.question_id === question_id)
+    // console.log("filter", filteredAns);
     if (filteredAns.length == 0)
       return [];
     let wf = this.getWordFreqObj(filteredAns);
