@@ -182,7 +182,7 @@ $anim-timing: 3s;
       font-size: 2rem;
     }
     &__chart {
-      max-width: 60vw;
+      max-width: 70vw;
       canvas {
         height:100% !important;
         width: 100% !important;
@@ -199,9 +199,18 @@ $anim-timing: 3s;
       grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
       span{
         color:grey;
+        display: inline;
       }
       p {
-        font-size: 3em;
+        font-size: 2.5rem;
+        white-space: nowrap;
+      }
+      div{
+        margin-inline:2em;
+        white-space: nowrap;
+        height:auto;
+        width:100%;
+        overflow:auto;
       }
     }
 }

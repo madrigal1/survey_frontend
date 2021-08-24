@@ -56,13 +56,10 @@ export class SurveyAnalyticsComponent implements OnInit {
       backgroundColor: ['#4F549E', '#D65DB1', '#032B44', '#59293E', '#A64C73'],
     },
   ];
-  public scatterChartOptions: any = {
+  public pieChartOptions: any = {
     responsive: true,
-    scales: {
-      x: {
-        type: 'linear',
-        position: 'bottom'
-      }
+    legend: {
+      position: 'bottom'
     },
   };
   public scatterChartLabels: Label[] = ['Eating', 'Drinking', 'Sleeping', 'Designing', 'Coding', 'Cycling', 'Running'];
@@ -204,12 +201,12 @@ export class SurveyAnalyticsComponent implements OnInit {
   getMax(question_id: string) {
     let filteredAns = this.numericalAns.filter((ele: any) => ele.question_id === question_id);
     filteredAns = filteredAns.map((ans: any) => ans.main_answer);
-    return Math.max(filteredAns);
+    return Math.max(...filteredAns);
   }
   getMin(question_id: string) {
     let filteredAns = this.numericalAns.filter((ele: any) => ele.question_id === question_id);
     filteredAns = filteredAns.map((ans: any) => ans.main_answer);
-    return Math.min(filteredAns);
+    return Math.min(...filteredAns);
   }
   getScaleLabel(question_id: string): string[] {
     let filteredAns = this.scaleAns.filter((ele: any) => ele.question_id === question_id);

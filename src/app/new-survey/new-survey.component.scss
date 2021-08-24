@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,300&display=swap');
+@import "../../breakpoints.scss";
 
 .survey-landing {
     width:100vw;
@@ -18,6 +19,15 @@
         "new new allsurveys allsurveys allsurveys"
         "new new allsurveys allsurveys allsurveys"
         "new new allsurveys allsurveys allsurveys";
+    @include media("<=tablet"){
+        height:auto;
+        grid-template-columns: 1fr;
+        grid-template-rows: 10vh 90vh auto;
+        grid-template-areas: 
+        "header"
+        "new"
+        "allsurveys";
+    }
     &__header{
         grid-area: header;
         color:white;
@@ -37,7 +47,6 @@
         text-align: center;
         padding: 1.2em;
         color: white;
-        height:90vh;
         border:1px solid black;
         box-shadow: 0 1px 3px 0 rgba(0,0,0,0.06);
         background-image:
@@ -53,7 +62,10 @@
         align-content: center;
         flex-direction: column;
         h3 {
-            font-size: 5rem;
+            font-size: 4.5rem;
+            @include media("<=tablet") {
+                font-size:2.5rem;
+            }
             margin-bottom: 0px;
             text-shadow: 0 1px 0 black;
             font-weight: bold;
@@ -63,9 +75,12 @@
             font-style: italic;
             text-shadow: 0 1px 0 black;
             margin-bottom: 50px;
-            margin-top: 5px;;
+            margin-top: 5px;
             margin-inline:0.2em ;
             font-size:1rem;
+            @include media("<=tablet"){
+                font-size: 0.8rem;
+            }
         }
         &__details {
             display: flex;
@@ -136,7 +151,9 @@
         justify-content: center;
         align-items: center;
         text-align: center;
-        overflow-y: scroll;
+        overflow-y: auto;
+        width: 100%;
+        height:100%;
         // background-color: #01175f;
        // background: url("../../assets/images/blue_bg.svg");
        background-color: #05299E;
@@ -152,6 +169,9 @@
             z-index: 0;
             width: 100%;
             overflow: auto;
+            @include media("<=tablet") {
+                padding-top:10vh;
+            }
             // display: flex;
             // justify-content: space-around;
             // flex-wrap: wrap;

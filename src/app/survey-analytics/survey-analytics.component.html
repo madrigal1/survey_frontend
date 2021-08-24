@@ -42,7 +42,7 @@
     <h3>Q. {{question.main_data}}</h3>
     <div class="survey-analytics-question__chart">
         <canvas baseChart [data]="getSelectionData(selectionAns,question._id,false)"
-            [labels]="getSelectionData(selectionAns,question._id,true)" [options]="barChartOptions"
+            [labels]="getSelectionData(selectionAns,question._id,true)" [options]="pieChartOptions"
             [legend]="pieChartLegend" [chartType]="pieChartType" [colors]="pieChartColors">
         </canvas>
     </div>
