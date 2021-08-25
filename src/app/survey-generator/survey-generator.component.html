@@ -169,18 +169,20 @@
         </main>
         <main *ngIf="ratingEnabled" class="survey-generator__properties__body-mcq__rating">
             <h3>Scale Settings</h3>
-            <div>
-                <p>Max Value: </p>
-                <input [(ngModel)]="currRating" type="number" default="5" (keydown)="handleNumberKeydown($event)">
-                <br />
-                <br />
-                <p>Annotation (optional)</p>
-                <textarea name="annotation" id="" [(ngModel)]="currAnnotation"></textarea>
-                <br />
-                <br />
-                <div class="submit" (click)="handleRatingSubmit()">
-                    <p>Submit</p>
+            <p *ngIf="firstRatingStep">Max Value: </p>
+            <input *ngIf="firstRatingStep" [(ngModel)]="currRating" type="number" default="5" maxlength="3"
+                pattern="([0-9]|[0])" (keydown)="handleNumberKeydown($event)">
+            <br />
+            <br />
+            <div *ngIf="!firstRatingStep" class="survey-generator__properties__body-mcq__rating__annotation">
+                <div *ngFor="let annotation of currAnnotationArr;index as i;trackBy:trackByFn2">
+                    <input type="text" name="annotation" placeholder="Guideline {{i+1}}"
+                        [(ngModel)]="currAnnotationArr[i]">
                 </div>
+            </div>
+
+            <div class="submit" (click)="handleRatingSubmit()">
+                <p>{{firstRatingStep?"Next":"Submit"}}</p>
             </div>
         </main>
     </section>

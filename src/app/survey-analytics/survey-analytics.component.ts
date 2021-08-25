@@ -75,10 +75,9 @@ export class SurveyAnalyticsComponent implements OnInit {
       return;
     }
     this.survey_id = sid;
-    console.log(this.survey_id);
     this.surveyService.getSurveyFromId(this.survey_id)
       .subscribe(({ data }) => {
-        console.log("survey", data);
+        // console.log("survey", data);
         this.survey = data;
       },
         (err) => {
@@ -91,19 +90,19 @@ export class SurveyAnalyticsComponent implements OnInit {
         this.selectionQues = data.filter((ele: any) => ele.type === SurveyComponentType.SINGLE_SELECTION || ele.type === SurveyComponentType.MULTIPLE_SELECTION);
         this.scaleQues = data.filter((ele: any) => ele.type === SurveyComponentType.SLIDER || ele.type === SurveyComponentType.RATING);
         this.numericalQues = data.filter((ele: any) => ele.type === SurveyComponentType.NUMERIC);
-        console.log(this.selectionQues);
+        // console.log(this.selectionQues);
       },
         (err) => {
           console.log(err);
         })
     this.surveyService.getAnswersForSurvey(this.survey_id)
       .subscribe(({ data }) => {
-        console.log("allAns", data);
+        //console.log("allAns", data);
         this.allAnswers = data;
         this.selectionAns = this.allAnswers.filter((ele: any) => ele.type === SurveyComponentType.SINGLE_SELECTION || ele.type === SurveyComponentType.MULTIPLE_SELECTION);
         this.scaleAns = this.allAnswers.filter((ele: any) => ele.type === SurveyComponentType.SLIDER || ele.type === SurveyComponentType.RATING);
         this.numericalAns = this.allAnswers.filter((ele: any) => ele.type === SurveyComponentType.NUMERIC);
-        console.log("selectAns", this.numericalAns);
+        // console.log("selectAns", this.numericalAns);
       },
         (err) => {
           console.log(err);
@@ -168,30 +167,33 @@ export class SurveyAnalyticsComponent implements OnInit {
   get25Quartile(question_id: string) {
     let filteredAns = this.numericalAns.filter((ele: any) => ele.question_id === question_id);
     filteredAns = filteredAns.map((ans: any) => ans.main_answer);
-    return this.quantile(filteredAns, .25);
+    return this.twoDecimals(this.quantile(filteredAns, .25));
   }
   get50Quartile(question_id: string) {
     let filteredAns = this.numericalAns.filter((ele: any) => ele.question_id === question_id);
     filteredAns = filteredAns.map((ans: any) => ans.main_answer);
-    return this.quantile(filteredAns, .50);
+    return this.twoDecimals(this.quantile(filteredAns, .50));
   }
 
   get75Quartile(question_id: string) {
     let filteredAns = this.numericalAns.filter((ele: any) => ele.question_id === question_id);
     filteredAns = filteredAns.map((ans: any) => ans.main_answer);
-    return this.quantile(filteredAns, .75);
+    return this.twoDecimals(this.quantile(filteredAns, .75));
   }
 
+  private twoDecimals(num: any) {
+    return parseFloat(num.toFixed(2));
+  }
 
   getMean(question_id: string) {
     let filteredAns = this.numericalAns.filter((ele: any) => ele.question_id === question_id);
     filteredAns = filteredAns.map((ans: any) => ans.main_answer);
-    return this.mean(filteredAns);
+    return this.twoDecimals(this.mean(filteredAns));
   }
   getStandardDeviation(question_id: string) {
     let filteredAns = this.numericalAns.filter((ele: any) => ele.question_id === question_id);
     filteredAns = filteredAns.map((ans: any) => ans.main_answer);
-    return this.std(filteredAns);
+    return this.twoDecimals(this.std(filteredAns));
   }
   getCount(question_id: string) {
     let filteredAns = this.numericalAns.filter((ele: any) => ele.question_id === question_id);

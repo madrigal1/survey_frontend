@@ -29,6 +29,8 @@
 .survey-generator {
     height:100vh;
     width:100vw;
+    overflow-x: hidden;
+    overflow-y:hidden;
     font-family: 'Roboto', sans-serif;
     display: grid; 
     grid-template-columns: repeat(7,1fr); 
@@ -46,6 +48,7 @@
     "questionTypes main main main main Properties Properties"; 
     @include media("<=phone") {
         height: auto;
+        overflow-y: auto;
         grid-template-columns: 1fr;
         grid-template-rows: auto auto 100vh auto;
         grid-template-areas:
@@ -197,6 +200,11 @@
             &__questions {
                 width:100%;
                 background-color: white;
+                height: auto;
+                @include media("<=tablet"){
+                    height: 100%;
+                    overflow-y: scroll;
+                }
                 &__question {
                     width:100%;
                     display: flex;
@@ -297,6 +305,7 @@
         padding-top: 4em;
         display: flex;
         flex-direction: column;
+        overflow-y: scroll;
         &__title {
             display: flex;
             justify-content: flex-start;
@@ -333,6 +342,21 @@
                 justify-content: center;
                 align-items: flex-start;
                 padding: 1em 2.5em;
+                &__annotation {
+                    flex:1;
+                    overflow-y: auto;              
+                    display: flex;
+                    justify-content: space-between;
+                    flex-direction: column;
+                    width: 100%;
+                    div{
+                        display: flex;
+                        margin-block: 0.4em;
+                    }
+                    input{
+                        margin-left: 1vw;
+                    }
+                }
                 .submit {
                     margin-top: 20px;
                     display: flex;
@@ -340,7 +364,7 @@
                     align-items: center;
                     background-color: #5F30E2;
                     color:white;
-                    padding:0.6em 0.2em;
+                    padding:0.7em 2em;
                     p{
                         font-weight: 500;
                         font-size: 0.75rem;

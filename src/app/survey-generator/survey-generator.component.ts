@@ -2,6 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { SurveyService } from '../survey.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BASE_URL } from '../baseUrl';
+import { HighlightSpanKind } from 'typescript';
 
 
 export enum SurveyComponentType {
@@ -55,6 +56,8 @@ export class SurveyGeneratorComponent implements OnInit {
   public currRating = 5;
   public currRatingIndex = -1;
   public currAnnotation: string;
+  public currAnnotationArr: Array<string> = Array(this.currRating).fill("");
+  public firstRatingStep = true;
   constructor(private surveyService: SurveyService, private modalService?: NgbModal) {
     this.questions = [];
     this.hasAdded = false;
@@ -213,6 +216,9 @@ export class SurveyGeneratorComponent implements OnInit {
   trackByFn(index: any, mcq: string) {
     return index;
   }
+  trackByFn2(index: any, man: string) {
+    return index;
+  }
   deleteMcq(index: number) {
     this.currMcq.splice(index, 1);
     console.log(this.currMcq);
@@ -225,6 +231,34 @@ export class SurveyGeneratorComponent implements OnInit {
   }
 
   handleRatingSubmit() {
+    if (this.firstRatingStep) {
+      if (this.currRating > 10) {
+        alert("max rating should be 10 or below");
+        this.currRating = 10;
+        return;
+      }
+      this.firstRatingStep = false;
+      this.currAnnotationArr = Array(this.currRating).fill("");
+      return;
+    } else {
+      console.log(this.currAnnotationArr);
+      let empty = false;
+      for (let ele of this.currAnnotationArr) {
+        if (ele.length < 1) {
+          empty = true;
+          break;
+        }
+      }
+      if (empty) {
+        alert("Please fill all the guidelines before hitting submit");
+        return;
+      }
+      this.currAnnotation = this.currAnnotationArr.reduce((acc: string, ele: string, currIndex) => {
+        return acc + `${currIndex + 1}-${ele}\n`
+      }, "");
+      console.log(this.currAnnotation);
+      this.firstRatingStep = true;
+    }
     const question = this.questions[this.currRatingIndex];
     question["additional_data"] = { max: this.currRating }
     if (this.currAnnotation && this.currAnnotation.length > 1)
@@ -243,6 +277,8 @@ export class SurveyGeneratorComponent implements OnInit {
     var charCode = (evt.which) ? evt.which : evt.keyCode
     if (charCode > 31 && (charCode != 46 && (charCode < 48 || charCode > 57)))
       return false;
+    if (evt.target.value && evt.target.value != "")
+      this.currAnnotationArr = Array(Number(this.currRating)).fill("")
     return true;
   }
 }
