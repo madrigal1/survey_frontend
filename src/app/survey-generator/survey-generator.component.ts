@@ -171,9 +171,32 @@ export class SurveyGeneratorComponent implements OnInit {
       toast.classList.remove("toast--visible");
     }, 4000)
   }
-
-  publishSurvey(content: any) {
+  async publishConfirm() {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to edit the survey after it is published",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, publish it!'
+    });
+    if (result.isConfirmed) {
+      Swal.fire(
+        'Published!',
+        'Your survey is live !',
+        'success'
+      )
+      return true;
+    } else {
+      return false;
+    }
+  }
+  async publishSurvey(content: any) {
     if (this.checkIsPublished())
+      return;
+    const result = await this.publishConfirm();
+    if (!result)
       return;
     this.questions = this.questions.map((question) => {
       if (question.type == SurveyComponentType.SINGLE_SELECTION || question.type == SurveyComponentType.MULTIPLE_SELECTION) {
