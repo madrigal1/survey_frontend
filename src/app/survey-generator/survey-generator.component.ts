@@ -3,7 +3,7 @@ import { SurveyService } from '../survey.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BASE_URL } from '../baseUrl';
 import { HighlightSpanKind } from 'typescript';
-
+import Swal from 'sweetalert2'
 
 export enum SurveyComponentType {
   SINGLE_LINE_TEXT = "single_line_text",
@@ -58,6 +58,7 @@ export class SurveyGeneratorComponent implements OnInit {
   public currAnnotation: string;
   public currAnnotationArr: Array<string> = Array(this.currRating).fill("");
   public firstRatingStep = true;
+  public isPublished = false;
   constructor(private surveyService: SurveyService, private modalService?: NgbModal) {
     this.questions = [];
     this.hasAdded = false;
@@ -89,13 +90,28 @@ export class SurveyGeneratorComponent implements OnInit {
       .subscribe(({ data }) => {
         console.log("all ques", data);
         this.questions = data;
+        this.isPublished = true;
       },
         (err) => {
           console.log(err);
           this.questions = [];
         })
   }
+  checkIsPublished(): boolean {
+    if (this.isPublished) {
+      // alert("Already Published");
+      Swal.fire({
+        icon: 'info',
+        title: "Can't do that...",
+        text: 'Survey already published!',
+        // footer: '<a href="">Why do I have this issue?</a>'
+      })
+    }
+    return this.isPublished;
+  }
   addQuestion(index: number) {
+    if (this.checkIsPublished())
+      return;
     this.hasAdded = true;
     const qm = this.questionTypeMap
     const qt = this.questionTypes[index].name as keyof typeof qm;
@@ -124,6 +140,8 @@ export class SurveyGeneratorComponent implements OnInit {
 
 
   deleteQuestion(index: number) {
+    if (this.checkIsPublished())
+      return;
     this.questions.splice(index, 1);
     const questionsCache = localStorage.getItem(this.currSurvey._id);
     if (questionsCache)
@@ -155,6 +173,8 @@ export class SurveyGeneratorComponent implements OnInit {
   }
 
   publishSurvey(content: any) {
+    if (this.checkIsPublished())
+      return;
     this.questions = this.questions.map((question) => {
       if (question.type == SurveyComponentType.SINGLE_SELECTION || question.type == SurveyComponentType.MULTIPLE_SELECTION) {
         if (!question.additional_data)
@@ -183,7 +203,8 @@ export class SurveyGeneratorComponent implements OnInit {
     this.modalService.open(content, { size: 'lg' });
   }
   enableMcq(index: number) {
-    console.log("triggered", index);
+    if (this.checkIsPublished())
+      return;
     this.ratingEnabled = false;
     this.mcqEnabled = true;
     this.currMcqIndex = index;
@@ -193,7 +214,6 @@ export class SurveyGeneratorComponent implements OnInit {
       this.addMcq();
   }
   addMcq() {
-    console.log("works")
     this.currMcq.push("");
   }
   disableMcq(index: number) {
@@ -224,6 +244,8 @@ export class SurveyGeneratorComponent implements OnInit {
     console.log(this.currMcq);
   }
   enableRatingEdit(index: number) {
+    if (this.checkIsPublished())
+      return;
     this.mcqEnabled = false;
     this.ratingEnabled = false;
     this.currRatingIndex = index;

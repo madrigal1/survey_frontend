@@ -75,8 +75,9 @@
                             <p class="survey-generator__main__content__questions__question__about__question-num">
                                 Q.{{i+1}}
                             </p>
-                            <input class="survey-generator__main__content__questions__question__about__input"
-                                type="text" [(ngModel)]="question.main_data" placeholder="Input your question here">
+                            <input [readOnly]="this.isPublished"
+                                class="survey-generator__main__content__questions__question__about__input" type="text"
+                                [(ngModel)]="question.main_data" placeholder="Input your question here">
                         </div>
                         <footer class="survey-generator__main__content__questions__question__about__footer">
                             <span
@@ -95,8 +96,9 @@
                             <p class="survey-generator__main__content__questions__question__about__question-num">
                                 Q.{{i+1}}
                             </p>
-                            <input class="survey-generator__main__content__questions__question__about__input"
-                                type="text" [(ngModel)]="question.main_data" placeholder="Input your question here">
+                            <input [readOnly]="this.isPublished"
+                                class="survey-generator__main__content__questions__question__about__input" type="text"
+                                [(ngModel)]="question.main_data" placeholder="Input your question here">
                         </div>
                         <footer class="survey-generator__main__content__questions__question__about__footer">
                             <div>
@@ -117,8 +119,9 @@
                             <p class="survey-generator__main__content__questions__question__about__question-num">
                                 Q.{{i+1}}
                             </p>
-                            <input class="survey-generator__main__content__questions__question__about__input"
-                                type="text" [(ngModel)]="question.main_data" placeholder="Input your question here">
+                            <input [readOnly]="this.isPublished"
+                                class="survey-generator__main__content__questions__question__about__input" type="text"
+                                [(ngModel)]="question.main_data" placeholder="Input your question here">
                         </div>
                         <footer class="survey-generator__main__content__questions__question__about__footer">
                             <div>
@@ -153,8 +156,8 @@
                 <div class="survey-generator__properties__body-mcq__body__choice"
                     *ngFor="let choice of currMcq;index as mcqi;trackBy:trackByFn">
                     <p>Choice {{mcqi+1}}: </p>
-                    <input (keydown)="handleMcqEnter($event)" [(ngModel)]="currMcq[mcqi]" type="text"
-                        placeholder="Input choice" />
+                    <input [readOnly]="this.isPublished" (keydown)="handleMcqEnter($event)" [(ngModel)]="currMcq[mcqi]"
+                        type="text" placeholder="Input choice" />
                     <img src="../../assets/images/delete_icon.svg" alt="delete" (click)="deleteMcq(mcqi)">
                 </div>
             </div>
@@ -170,13 +173,13 @@
         <main *ngIf="ratingEnabled" class="survey-generator__properties__body-mcq__rating">
             <h3>Scale Settings</h3>
             <p *ngIf="firstRatingStep">Max Value: </p>
-            <input *ngIf="firstRatingStep" [(ngModel)]="currRating" type="number" default="5" maxlength="3"
-                pattern="([0-9]|[0])" (keydown)="handleNumberKeydown($event)">
+            <input [readOnly]="this.isPublished" *ngIf="firstRatingStep" [(ngModel)]="currRating" type="number"
+                default="5" maxlength="3" pattern="([0-9]|[0])" (keydown)="handleNumberKeydown($event)">
             <br />
             <br />
             <div *ngIf="!firstRatingStep" class="survey-generator__properties__body-mcq__rating__annotation">
                 <div *ngFor="let annotation of currAnnotationArr;index as i;trackBy:trackByFn2">
-                    <input type="text" name="annotation" placeholder="Guideline {{i+1}}"
+                    <input [readOnly]="this.isPublished" type="text" name="annotation" placeholder="Guideline {{i+1}}"
                         [(ngModel)]="currAnnotationArr[i]">
                 </div>
             </div>
