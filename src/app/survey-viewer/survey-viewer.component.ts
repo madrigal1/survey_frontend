@@ -38,6 +38,10 @@ export class SurveyViewerComponent implements OnInit {
     }
     this.survey_id = sid;
     console.log(this.survey_id);
+    if (localStorage.getItem(this.survey_id)) {
+      this.router.navigate(["/done"]);
+      return;
+    }
     this.surveyService.getSurveyFromId(this.survey_id)
       .subscribe(({ data }) => {
         //console.log(data);
@@ -117,6 +121,7 @@ export class SurveyViewerComponent implements OnInit {
     this.currQuesIndex--;
   }
   submitAnswers() {
+    localStorage.setItem(this.survey_id, "status:true");
     this.surveyService.recordAnswers(this.allAnswers)
       .subscribe((data) => {
         console.log("backendresp", data);
